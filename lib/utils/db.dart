@@ -49,7 +49,7 @@ Future<Database> openDatabase() async {
 Future<String> helloWorld() async {
   Database db = await openDatabase();
 
-  final data = await db.query('cards');
+  final data = await db.query('content');
   db.close();
 
   return data.isNotEmpty ? data.first['data'] as String : 'void';
