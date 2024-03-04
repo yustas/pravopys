@@ -8,8 +8,19 @@ class FutureBuilderExampleApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: FutureBuilderExample(),
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        /* light theme settings */
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.system,
+      home: const Scaffold(
+        body: FutureBuilderExample(),
+      ),
     );
   }
 }
@@ -27,7 +38,7 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.displayMedium!,
+      style: Theme.of(context).textTheme.titleLarge!,
       textAlign: TextAlign.center,
       child: FutureBuilder<String>(
         future: _calculation, // a previously-obtained Future<String> or null
@@ -35,11 +46,6 @@ class _FutureBuilderExampleState extends State<FutureBuilderExample> {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
-              const Icon(
-                Icons.check_circle_outline,
-                color: Colors.green,
-                size: 60,
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Text('${snapshot.data}'),
