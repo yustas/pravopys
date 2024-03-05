@@ -8,24 +8,32 @@ void main() {
     print('${record.level.name}: ${record.time} | ${record.message}');
   });
 
-  runApp(const FutureBuilderExampleApp());
+  runApp(const MovaApp());
 }
 
-class FutureBuilderExampleApp extends StatelessWidget {
-  const FutureBuilderExampleApp({super.key});
+class MovaApp extends StatelessWidget {
+  const MovaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final textTheme = ThemeData().textTheme.copyWith(
+        titleLarge: ThemeData().textTheme.titleLarge!.copyWith(fontSize: 24)
+    );
+
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,
+        textTheme: textTheme,
         /* light theme settings */
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        textTheme: textTheme,
         /* dark theme settings */
       ),
       themeMode: ThemeMode.system,
+
       home: const ContentList(),
     );
   }
