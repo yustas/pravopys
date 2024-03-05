@@ -4,8 +4,10 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
+import 'package:logging/logging.dart';
 
-const dbName = 'mova.db';
+const String dbName = 'mova.db';
+final log = Logger('DB');
 
 Future<String> getDatabasePath() async {
   final databasesPath = await syspath.getLibraryDirectory();
@@ -14,7 +16,7 @@ Future<String> getDatabasePath() async {
 
 Future<void> copyDatabase(String from, String to) async {
   // Should happen only the first time you launch your application
-  print("Creating new copy from asset");
+  log.info("Creating new copy from asset");
 
   // Make sure the parent directory exists
   try {
@@ -36,7 +38,7 @@ Future<Database> openDatabase() async {
 
   true
       ? await copyDatabase(path.join("assets", "db", dbName), dbPath)
-      : print("Opening existing database");
+      : log.info("Opening existing database");
 
   return await sql.openDatabase(
     dbPath,
