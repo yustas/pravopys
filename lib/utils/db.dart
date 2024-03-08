@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:logging/logging.dart';
+import 'package:mova/models/content.dart';
 
 const String dbName = 'mova.db';
 final log = Logger('DB');
@@ -52,11 +53,23 @@ Future<Database> openDatabase() async {
   );
 }
 
-Future<String> helloWorld() async {
+Future<List<Content>> loadContent() async {
   Database db = await openDatabase();
 
-  final data = await db.query('content');
-  db.close();
+  List<Map> rows = await db.query('content',
+      columns: ['id', 'level', 'parent', 'data', 'version'],
+      where: 'parent = ?',
+      whereArgs: [0]);
 
-  return data.isNotEmpty ? data.first['data'] as String : 'void';
+  return rows.isNotEmpty
+      ? rows
+          .map((row) => Content(
+                id: row['id'] as int,
+                level: row['level'] as int,
+                data: row['data'] as String,
+                parent: row['parent'] as int,
+                // version: row['version'] as int,
+              ))
+          .toList()
+      : List.empty();
 }
