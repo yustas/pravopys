@@ -5,7 +5,6 @@ import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:logging/logging.dart';
-import 'package:mova/models/content.dart';
 
 const String dbName = 'mova.db';
 final log = Logger('DB');
@@ -37,7 +36,7 @@ Future<Database> openDatabase() async {
   final dbPath = await getDatabasePath();
   var isExists = await sql.databaseExists(dbPath);
 
-  true
+  !isExists
       ? await copyDatabase(path.join("assets", "db", dbName), dbPath)
       : log.info("Opening existing database");
 
@@ -51,25 +50,4 @@ Future<Database> openDatabase() async {
     // onCreate: (Database db, int version) async {
     //   await db.execute('CREATE TABLE cnt(value INTEGER)');
   );
-}
-
-Future<List<Content>> loadContent() async {
-  Database db = await openDatabase();
-
-  List<Map> rows = await db.query('content',
-      columns: ['id', 'level', 'parent', 'data', 'version'],
-      where: 'parent = ?',
-      whereArgs: [0]);
-
-  return rows.isNotEmpty
-      ? rows
-          .map((row) => Content(
-                id: row['id'] as int,
-                level: row['level'] as int,
-                data: row['data'] as String,
-                parent: row['parent'] as int,
-                // version: row['version'] as int,
-              ))
-          .toList()
-      : List.empty();
 }

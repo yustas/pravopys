@@ -1,15 +1,13 @@
-class Content {
-  const Content({
+class Article {
+  const Article({
     required this.id,
-    required this.level,
     required this.data,
-    required this.parent,
+    required this.parentId,
     required this.pos
   });
 
   final int id;
-  final int level;
   final String data;
-  final int parent;
+  final int parentId;
   final int pos;
 }

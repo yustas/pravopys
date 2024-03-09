@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mova/screens/content_list.dart';
 import 'package:logging/logging.dart';
+import 'package:mova/i18n/ua.dart';
 
 void main() {
   Logger.root.level = Level.ALL;
