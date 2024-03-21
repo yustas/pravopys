@@ -58,17 +58,26 @@ class _ContentListState extends State<ContentList> {
                       scrollDirection: Axis.vertical,
                       itemCount: content.length,
                       itemBuilder: (context, index) {
-                        return MarkdownBody(
-                            data: '# ${content[index].data}',
-                            selectable: true,
-                            onTapText: () {
-                              openContent(
-                                context,
-                                content[index].id,
-                                content[index].data,
-                              );
-                            },
-                          styleSheet: stylesheet,
+                        return InkWell(
+                          onTap: () {
+                            openContent(
+                              context,
+                              content[index].id,
+                              content[index].data,
+                            );
+                          },
+                          child: MarkdownBody(
+                              data: '# ${content[index].data}',
+                              // selectable: true,
+                              // onTapText: () {
+                              //   openContent(
+                              //     context,
+                              //     content[index].id,
+                              //     content[index].data,
+                              //   );
+                              // },
+                            styleSheet: stylesheet,
+                          ),
                         );
                       },
                     );
