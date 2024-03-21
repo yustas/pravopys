@@ -36,7 +36,7 @@ Future<Database> openDatabase() async {
   final dbPath = await getDatabasePath();
   var isExists = await sql.databaseExists(dbPath);
 
-  !isExists
+  true
       ? await copyDatabase(path.join("assets", "db", dbName), dbPath)
       : log.info("Opening existing database");
 
