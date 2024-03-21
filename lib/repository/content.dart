@@ -2,7 +2,7 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:mova/utils/db.dart';
 import 'package:mova/models/content.dart';
 import 'package:mova/models/article.dart';
-import 'package:mova/models/page.dart';
+import 'package:mova/models/page_data.dart';
 
 Future<List<Content>> loadContent({int parent = 0}) async {
   Database db = await openDatabase();
@@ -51,7 +51,7 @@ Future<List<Article>> loadArticles({int parentId = 0}) async {
       : List.empty();
 }
 
-Future<Page> loadPage({int parentContentId = 0}) async {
+Future<PageData> loadPage({int parentContentId = 0}) async {
   List<Content> content = await loadContent(parent: parentContentId);
   List<int> contentIds = content.map((c) => c.id).toList();
 
@@ -59,5 +59,5 @@ Future<Page> loadPage({int parentContentId = 0}) async {
       ? await loadArticles(parentId: parentContentId)
       : List.empty();
 
-    return Page(content: content, articles: articles);
+    return PageData(content: content, articles: articles);
 }
