@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mova/screens/content_list.dart';
 import 'package:logging/logging.dart';
-import 'package:mova/i18n/ua.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time} | ${record.message}');

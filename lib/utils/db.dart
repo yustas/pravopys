@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:logging/logging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 const String dbName = 'mova.db';
 final log = Logger('DB');
@@ -36,18 +37,31 @@ Future<Database> openDatabase() async {
   final dbPath = await getDatabasePath();
   var isExists = await sql.databaseExists(dbPath);
 
-  true
-      ? await copyDatabase(path.join("assets", "db", dbName), dbPath)
-      : log.info("Opening existing database");
+  isExists
+      ? log.info("Opening existing database")
+      : await copyDatabase(path.join("assets", "db", dbName), dbPath);
 
-  return await sql.openDatabase(
-    dbPath,
-    // version: 1,
-    readOnly: true,
-    // onCreate: (Database db, int version) {
-    //   print("DB was created (");
-    // }
-    // onCreate: (Database db, int version) async {
-    //   await db.execute('CREATE TABLE cnt(value INTEGER)');
-  );
+  return await sql.openDatabase(dbPath);
+}
+
+Future<void> deleteDatabase() async {
+  var path = await getDatabasePath();
+  log.info("Delete database: $path");
+  sql.deleteDatabase(path);
+}
+
+Future<Database> initDb() async {
+  var db = await openDatabase();
+  var actualVersion = int.parse(dotenv.get('DB_VERSION', fallback: '0'));
+
+  if (await db.getVersion() < actualVersion) {
+    log.info("Upgrade DB file to version: $actualVersion");
+    db.close();
+    await deleteDatabase();
+    db = await openDatabase();
+
+    db.setVersion(actualVersion);
+  }
+
+  return db;
 }

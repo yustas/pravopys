@@ -5,7 +5,7 @@ import 'package:mova/models/article.dart';
 import 'package:mova/models/page_data.dart';
 
 Future<List<Content>> loadContent({int parent = 0}) async {
-  Database db = await openDatabase();
+  Database db = await initDb();
 
   List<Map> rows = await db.query(
     'content',
@@ -29,7 +29,7 @@ Future<List<Content>> loadContent({int parent = 0}) async {
 }
 
 Future<List<Article>> loadArticles({int parentId = 0}) async {
-  Database db = await openDatabase();
+  Database db = await initDb();
 
   List<Map> rows = await db.query(
     'articles',
