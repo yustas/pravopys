@@ -6,9 +6,14 @@ import 'package:mova/styles/markdown.dart';
 import 'package:mova/widgets/error.dart';
 import 'package:mova/widgets/loading.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class ContentList extends StatefulWidget {
-  const ContentList({super.key, this.parent = 0, this.title = APP_TITLE});
+  const ContentList({
+    super.key,
+    this.parent = 0,
+    this.title = APP_TITLE,
+  });
 
   final int parent;
   final String title;
@@ -35,6 +40,10 @@ class _ContentListState extends State<ContentList> {
           ),
         ),
       ); // Navigator.push(context, route)
+    }
+
+    if (widget.title == APP_TITLE) {
+      FlutterNativeSplash.remove();
     }
 
     return Scaffold(

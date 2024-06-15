@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mova/screens/content_list.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: ".env");
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
