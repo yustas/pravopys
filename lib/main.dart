@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mova/repository/content.dart';
 import 'package:mova/screens/content_list.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -46,7 +47,7 @@ class MovaApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
 
-      home: const ContentList(),
+      home: const ContentList(content: homeContent),
     );
   }
 }

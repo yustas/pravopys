@@ -3,6 +3,7 @@ class Content {
     required this.id,
     required this.level,
     required this.data,
+    required this.prefix,
     required this.parent,
     required this.pos
   });
@@ -10,6 +11,9 @@ class Content {
   final int id;
   final int level;
   final String data;
+  final String prefix;
   final int parent;
   final int pos;
+
+  get title => data;
 }

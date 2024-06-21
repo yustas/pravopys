@@ -4,12 +4,14 @@ import 'package:mova/models/content.dart';
 import 'package:mova/models/article.dart';
 import 'package:mova/models/page_data.dart';
 
+import '../i18n/ua.dart';
+
 Future<List<Content>> loadContent({int parent = 0}) async {
   Database db = await initDb();
 
   List<Map> rows = await db.query(
     'content',
-    columns: ['id', 'level', 'parent', 'data', 'pos'],
+    columns: ['id', 'level', 'parent', 'data', 'prefix', 'pos'],
     where: 'parent = ?',
     whereArgs: [parent],
     orderBy: 'pos',
@@ -21,6 +23,7 @@ Future<List<Content>> loadContent({int parent = 0}) async {
                 id: row['id'] as int,
                 level: row['level'] as int,
                 data: row['data'] as String,
+                prefix: row['prefix'] as String,
                 parent: row['parent'] as int,
                 pos: row['pos'] as int,
               ))
@@ -59,5 +62,14 @@ Future<PageData> loadPage({int parentContentId = 0}) async {
       ? await loadArticles(parentId: parentContentId)
       : List.empty();
 
-    return PageData(content: content, articles: articles);
+  return PageData(content: content, articles: articles);
 }
+
+const homeContent = Content(
+  id: 0,
+  level: 0,
+  data: APP_TITLE,
+  parent: 0,
+  pos: 0,
+  prefix: '',
+);

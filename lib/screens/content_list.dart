@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/models/page_data.dart';
+import 'package:mova/models/content.dart';
 import 'package:mova/styles/markdown.dart';
 import 'package:mova/widgets/error.dart';
 import 'package:mova/widgets/loading.dart';
@@ -11,12 +12,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 class ContentList extends StatefulWidget {
   const ContentList({
     super.key,
-    this.parent = 0,
-    this.title = APP_TITLE,
+    required this.content,
   });
 
-  final int parent;
-  final String title;
+  final Content content;
 
   @override
   State<ContentList> createState() => _ContentListState();
@@ -25,30 +24,26 @@ class ContentList extends StatefulWidget {
 class _ContentListState extends State<ContentList> {
   @override
   Widget build(BuildContext context) {
-    final Future<PageData> pageData = loadPage(parentContentId: widget.parent);
+    final Future<PageData> pageData = loadPage(parentContentId: widget.content.id);
 
     void openContent(
       BuildContext context,
-      int parent,
-      String title,
+      Content content,
     ) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => ContentList(
-            parent: parent,
-            title: title,
-          ),
+          builder: (ctx) => ContentList(content: content),
         ),
       ); // Navigator.push(context, route)
     }
 
-    if (widget.title == APP_TITLE) {
+    if (widget.content.data == APP_TITLE) {
       FlutterNativeSplash.remove();
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('${widget.content.prefix} ${widget.content.data}'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
@@ -57,7 +52,8 @@ class _ContentListState extends State<ContentList> {
             Expanded(
                 child: FutureBuilder<PageData>(
               future: pageData,
-              builder: (BuildContext context, AsyncSnapshot<PageData> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<PageData> snapshot) {
                 if (snapshot.hasData) {
                   var content = snapshot.data!.content;
                   var articles = snapshot.data!.articles;
@@ -71,20 +67,20 @@ class _ContentListState extends State<ContentList> {
                           onTap: () {
                             openContent(
                               context,
-                              content[index].id,
-                              content[index].data,
+                              content[index],
                             );
                           },
                           child: MarkdownBody(
-                              data: '# ${content[index].data}',
-                              // selectable: true,
-                              // onTapText: () {
-                              //   openContent(
-                              //     context,
-                              //     content[index].id,
-                              //     content[index].data,
-                              //   );
-                              // },
+                            data:
+                                '# ${content[index].prefix} ${content[index].data}',
+                            // selectable: true,
+                            // onTapText: () {
+                            //   openContent(
+                            //     context,
+                            //     content[index].id,
+                            //     content[index].data,
+                            //   );
+                            // },
                             styleSheet: stylesheet,
                           ),
                         );
