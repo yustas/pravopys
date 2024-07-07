@@ -1,1 +1,1 @@
-const String APP_TITLE = "Український правопис";
+const String APP_TITLE = "Правопис";

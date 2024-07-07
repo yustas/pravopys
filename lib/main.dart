@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mova/repository/content.dart';
-import 'package:mova/screens/content_list.dart';
+import 'package:mova/screens/pravopys.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -27,6 +27,7 @@ class MovaApp extends StatelessWidget {
         // AppTitle
         titleLarge: ThemeData().textTheme.titleLarge!.copyWith(fontSize: 24),
         // # Heading 1
+        headlineLarge: ThemeData().textTheme.headlineLarge!.copyWith(fontSize: 32, fontWeight: FontWeight.bold),
         headlineSmall: ThemeData().textTheme.headlineSmall!.copyWith(fontSize: 24),
         bodyMedium: ThemeData().textTheme.bodyMedium!.copyWith(
             fontSize: 20,
@@ -47,7 +48,7 @@ class MovaApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
 
-      home: const ContentList(content: homeContent),
+      home: const Pravopys(content: homeContent),
     );
   }
 }
