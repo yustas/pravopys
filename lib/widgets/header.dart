@@ -24,10 +24,11 @@ class Header extends StatelessWidget {
 
     if (searchBar) {
       children.add(const Search());
+      children.add(const SizedBox(height: 10));
     }
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: children,
       ),

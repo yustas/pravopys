@@ -9,10 +9,10 @@ class Search extends StatelessWidget {
         padding: const MaterialStatePropertyAll<EdgeInsets>(
             EdgeInsets.symmetric(horizontal: 16.0, vertical: 0)),
         elevation: MaterialStateProperty.all(0.0),
-        backgroundColor: MaterialStateProperty.all(Colors.black12),
+        backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 245, 245, 245)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+                borderRadius: BorderRadius.circular(12.0),
             )
         ),
         leading: const Icon(Icons.search));
