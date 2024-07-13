@@ -47,7 +47,15 @@ class _PravopysState extends State<Pravopys> {
         icon: const Icon(Icons.home_rounded),
         tooltip: 'Головна',
         onPressed: () {
-          // handle the press
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (ctx) => const Pravopys(
+                content: homeContent,
+                prevContent: null,
+              ),
+            ),
+            (Route<dynamic> route) => false,
+          );
         },
       ),
     ];
