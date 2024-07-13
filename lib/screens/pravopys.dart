@@ -11,12 +11,10 @@ import 'package:mova/widgets/articles_list.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class Pravopys extends StatefulWidget {
-  const Pravopys({
-    super.key,
-    required this.content,
-  });
+  const Pravopys({super.key, required this.content, required this.prevContent});
 
   final Content content;
+  final Content? prevContent;
 
   @override
   State<Pravopys> createState() => _PravopysState();
@@ -28,20 +26,42 @@ class _PravopysState extends State<Pravopys> {
     final Future<PageData> pageData =
         loadPage(parentContentId: widget.content.id);
 
-    var isFirstScreen = widget.content.data == APP_TITLE;
-    var header = widget.content.prefix.isNotEmpty
-        ? "${widget.content.prefix} ${widget.content.data}"
-        : widget.content.data;
-    var appBarTitle = header;
+    String getContentData(Content content) {
+      return content.prefix.isNotEmpty
+          ? "${content.prefix} ${content.data}"
+          : content.data;
+    }
+
+    var isFirstScreen = widget.prevContent == null;
+    var header = getContentData(widget.content);
+    var appBarTitle = isFirstScreen ? '' : getContentData(widget.prevContent!);
+    var actions = [
+      IconButton(
+        icon: const Icon(Icons.search),
+        tooltip: 'Пошук',
+        onPressed: () {
+          // handle the press
+        },
+      ),
+      IconButton(
+        icon: const Icon(Icons.home_rounded),
+        tooltip: 'Головна',
+        onPressed: () {
+          // handle the press
+        },
+      ),
+    ];
 
     if (isFirstScreen) {
       FlutterNativeSplash.remove();
       appBarTitle = '';
+      actions = [];
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle),
+        actions: actions,
       ),
       body: Column(
         children: [
@@ -55,7 +75,8 @@ class _PravopysState extends State<Pravopys> {
                 var articles = snapshot.data!.articles;
 
                 if (content.isNotEmpty) {
-                  return ContentList(content: content);
+                  return ContentList(
+                      content: content, prevPage: widget.content);
                 } else {
                   return ArticlesList(articles: articles);
                 }

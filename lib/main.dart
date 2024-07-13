@@ -48,7 +48,7 @@ class MovaApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.system,
 
-      home: const Pravopys(content: homeContent),
+      home: const Pravopys(content: homeContent, prevContent: null),
     );
   }
 }

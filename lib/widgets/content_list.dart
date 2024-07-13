@@ -4,21 +4,28 @@ import '../models/content.dart';
 import '../screens/pravopys.dart';
 
 class ContentList extends StatelessWidget {
-  const ContentList({super.key, required this.content});
+  const ContentList({super.key, required this.content, required this.prevPage});
 
   final List<Content> content;
+  final Content prevPage;
 
   @override
   Widget build(BuildContext context) {
     void openContent(
       BuildContext context,
-      Content content,
+      Content nextContent,
     ) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => Pravopys(content: content),
+          builder: (ctx) => Pravopys(content: nextContent, prevContent: prevPage),
         ),
       ); // Navigator.push(context, route)
+    }
+
+    String getPrefix(Content content) {
+      return content.prefix.isEmpty
+          ? ''
+          : '${content.prefix} ';
     }
 
     return Container(
@@ -33,7 +40,7 @@ class ContentList extends StatelessWidget {
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(
-                Radius.circular(15.0) //                 <--- border radius here
+                Radius.circular(15.0)
                 ),
           ),
           child: ListView.builder(
@@ -47,7 +54,29 @@ class ContentList extends StatelessWidget {
                     content[index],
                   );
                 },
-                child: Text('${content[index].prefix} ${content[index].data}'),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Color.fromARGB(70, 150, 150, 150)))),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [Text(getPrefix(content[index]))],
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Text(content[index].data)],
+                        ),
+                      ),
+                      const Column(
+                        children: [Icon(Icons.chevron_right)],
+                      ),
+                    ],
+                  ),
+                )
               );
             },
           ),
