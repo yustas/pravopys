@@ -11,6 +11,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var children = <Widget>[
+      const SizedBox(height: 10),
       SizedBox(
         width: double.infinity,
         child: Text(

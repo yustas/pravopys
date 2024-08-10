@@ -8,6 +8,7 @@ import 'package:mova/widgets/loading.dart';
 import 'package:mova/widgets/header.dart';
 import 'package:mova/widgets/content_list.dart';
 import 'package:mova/widgets/articles_list.dart';
+import 'package:mova/utils/search.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class Pravopys extends StatefulWidget {
@@ -39,9 +40,7 @@ class _PravopysState extends State<Pravopys> {
       IconButton(
         icon: const Icon(Icons.search),
         tooltip: 'Пошук',
-        onPressed: () {
-          // handle the press
-        },
+        onPressed: () => search(context, ''),
       ),
       IconButton(
         icon: const Icon(Icons.home_rounded),
