@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
-import 'package:mova/models/search_data.dart';
 import 'package:mova/widgets/error.dart';
 import 'package:mova/widgets/loading.dart';
 import 'package:mova/widgets/search_list.dart';
 
+import '../models/content.dart';
+
 class ContentSearchDelegate extends SearchDelegate {
-  ContentSearchDelegate() : super(searchFieldLabel: SEARCH_TITLE);
+  ContentSearchDelegate() : super(searchFieldLabel: SEARCH_HINT);
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -37,11 +38,11 @@ class ContentSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
 
-    final Future<List<SearchData>> searchData = findContent(needle: query);
+    final Future<List<Content>> searchData = findContent(needle: query);
 
-    return FutureBuilder<List<SearchData>>(
+    return FutureBuilder<List<Content>>(
       future: searchData,
-      builder: (BuildContext context, AsyncSnapshot<List<SearchData>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Content>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
             return SearchList(results: snapshot.data!);

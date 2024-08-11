@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:mova/repository/content.dart';
 
 import '../models/content.dart';
-import '../models/search_data.dart';
 import '../screens/pravopys.dart';
 
 class SearchList extends StatelessWidget {
   const SearchList({super.key, required this.results});
 
-  final List<SearchData> results;
+  final List<Content> results;
 
   @override
   Widget build(BuildContext context) {
     void openContent(
-        BuildContext context,
-        Content nextContent,
-        ) {
+      BuildContext context,
+      Content nextContent,
+    ) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => Pravopys(content: nextContent, prevContent: null),
+          builder: (ctx) => Pravopys(content: nextContent, prevContent: searchContent),
         ),
       ); // Navigator.push(context, route)
     }
@@ -30,16 +30,17 @@ class SearchList extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
               onTap: () {
-                // openContent(
-                //   context,
-                //   results[index],
-                // );
+                openContent(
+                  context,
+                  results[index],
+                );
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 decoration: const BoxDecoration(
                     border: Border(
-                        bottom: BorderSide(color: Color.fromARGB(70, 150, 150, 150)))),
+                        bottom: BorderSide(
+                            color: Color.fromARGB(70, 150, 150, 150)))),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -57,9 +58,7 @@ class SearchList extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
-          );
-
+              ));
           //Text(results[index].data);
         },
       ),

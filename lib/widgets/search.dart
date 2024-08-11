@@ -27,7 +27,7 @@ class Search extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
         )),
         leading: const Icon(Icons.search),
-        hintText: SEARCH_TITLE,
+        hintText: SEARCH_HINT,
         textStyle: MaterialStatePropertyAll<TextStyle>(TextStyle(
             fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize)),
       );

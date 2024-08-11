@@ -3,9 +3,12 @@ import 'package:mova/utils/db.dart';
 import 'package:mova/models/content.dart';
 import 'package:mova/models/article.dart';
 import 'package:mova/models/page_data.dart';
-import 'package:mova/models/search_data.dart';
 
 import '../i18n/ua.dart';
+
+Iterable<int> uniqueList(Iterable<int> list) {
+  return list.toSet().toList();
+}
 
 Map<String, String> converter = {
   'а': 'a',
@@ -21,7 +24,7 @@ Map<String, String> converter = {
   'и': 'y',
   'і': 'i',
   'ї': 'yi',
-  'й': 'у',
+  'й': 'y',
   'к': 'k',
   'л': 'l',
   'м': 'm',
@@ -137,7 +140,7 @@ Future<PageData> loadPage({int parentContentId = 0}) async {
   return PageData(content: content, articles: articles);
 }
 
-Future<List<SearchData>> findContent({String needle = ''}) async {
+Future<List<Content>> findContent({String needle = ''}) async {
   var db = await initDb();
   if (needle.isEmpty) {
     return List.empty();
@@ -155,33 +158,40 @@ Future<List<SearchData>> findContent({String needle = ''}) async {
 
   List<Map> rowsExactly = await db.query(
     'search',
-    columns: ['content_id', 'content_data', 'content_prefix'],
+    columns: ['content_id', 'content_level', 'content_parent', 'content_data', 'content_prefix', 'content_pos'],
     where: where,
     whereArgs: whereArgs,
+    groupBy: 'content_id',
   );
 
   Iterable<int> ids = rowsExactly.map((row) => row['content_id'] as int);
-  Iterable<String> placeholders = rowsExactly.map((row) => '?');
+  Iterable<String> placeholders = ids.map((id) => '?');
 
-  where = 'search_data LIKE ? and content_id NOT IN (${placeholders.join(',')})';
+  where =
+      'search_data LIKE ? and content_id NOT IN (${placeholders.join(',')})';
   whereArgs = ['$search%', ...ids];
+
+  //await db.rawQuery('PRAGMA case_sensitive_like = true');
 
   List<Map> rowsStarFrom = await db.query(
     'search',
-    columns: ['content_id', 'content_data', 'content_prefix'],
+    columns: ['content_id', 'content_level', 'content_parent', 'content_data', 'content_prefix', 'content_pos'],
     where: where,
     whereArgs: whereArgs,
+    groupBy: 'content_id',
   );
 
   List<Map> rows = rowsExactly + rowsStarFrom;
 
-
   return rows.isNotEmpty
       ? rows
-          .map((row) => SearchData(
-                contentId: row['content_id'] as int,
+          .map((row) => Content(
+                id: row['content_id'] as int,
+                level: 0,
                 data: row['content_data'] as String,
                 prefix: row['content_prefix'] as String,
+                parent: row['content_parent'] as int,
+                pos: row['content_pos'] as int,
               ))
           .toList()
       : List.empty();
@@ -191,6 +201,15 @@ const homeContent = Content(
   id: 0,
   level: 0,
   data: APP_TITLE,
+  parent: 0,
+  pos: 0,
+  prefix: '',
+);
+
+const searchContent = Content(
+  id: 0,
+  level: 0,
+  data: SEARCH_TITLE,
   parent: 0,
   pos: 0,
   prefix: '',

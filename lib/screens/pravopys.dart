@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/models/page_data.dart';
 import 'package:mova/models/content.dart';
