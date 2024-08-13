@@ -22,12 +22,6 @@ class ContentList extends StatelessWidget {
       ); // Navigator.push(context, route)
     }
 
-    String getPrefix(Content content) {
-      return content.prefix.isEmpty
-          ? ''
-          : '${content.prefix} ';
-    }
-
     return Container(
       decoration: const BoxDecoration(
           color: Color.fromARGB(30, 150, 150, 150),
@@ -63,7 +57,7 @@ class ContentList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        children: [Text(getPrefix(content[index]))],
+                        children: [Text(content[index].numeration)],
                       ),
                       Expanded(
                         child: Column(

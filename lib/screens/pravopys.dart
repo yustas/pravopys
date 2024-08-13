@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/models/page_data.dart';
 import 'package:mova/models/content.dart';
@@ -38,12 +39,12 @@ class _PravopysState extends State<Pravopys> {
     var actions = [
       IconButton(
         icon: const Icon(Icons.search),
-        tooltip: 'Пошук',
+        tooltip: SEARCH_TITLE,
         onPressed: () => search(context, ''),
       ),
       IconButton(
         icon: const Icon(Icons.home_rounded),
-        tooltip: 'Головна',
+        tooltip: APP_TITLE,
         onPressed: () {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -84,7 +85,7 @@ class _PravopysState extends State<Pravopys> {
                   return ContentList(
                       content: content, prevPage: widget.content);
                 } else {
-                  return ArticlesList(articles: articles);
+                  return ArticlesList(articles: articles, content: widget.content);
                 }
               } else if (snapshot.hasError) {
                 return Error(message: 'Error: ${snapshot.error}');

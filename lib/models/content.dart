@@ -16,4 +16,5 @@ class Content {
   final int pos;
 
   get title => data;
+  get numeration => prefix.isEmpty ? '' : '$prefix ';
 }

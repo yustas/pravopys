@@ -81,6 +81,28 @@ Map<String, String> converter = {
   'Я': 'IA',
 };
 
+Content contentRow(Map row) {
+  return Content(
+    id: row['id'] as int,
+    level: row['level'] as int,
+    data: row['data'] as String,
+    prefix: row['prefix'] as String,
+    parent: row['parent'] as int,
+    pos: row['pos'] as int,
+  );
+}
+
+Content searchRow(Map row) {
+  return Content(
+    id: row['content_id'] as int,
+    level: row['content_level'] as int,
+    data: row['content_data'] as String,
+    prefix: row['content_prefix'] as String,
+    parent: row['content_parent'] as int,
+    pos: row['content_pos'] as int,
+  );
+}
+
 Future<List<Content>> loadContent({int parent = 0}) async {
   Database db = await initDb();
 
@@ -93,17 +115,25 @@ Future<List<Content>> loadContent({int parent = 0}) async {
   );
 
   return rows.isNotEmpty
-      ? rows
-          .map((row) => Content(
-                id: row['id'] as int,
-                level: row['level'] as int,
-                data: row['data'] as String,
-                prefix: row['prefix'] as String,
-                parent: row['parent'] as int,
-                pos: row['pos'] as int,
-              ))
-          .toList()
+      ? rows.map((row) => contentRow(row)).toList()
       : List.empty();
+}
+
+Future<Content> loadContentByPrefix({String prefix = ''}) async {
+  Database db = await initDb();
+
+  List<Map> rows = await db.query(
+    'content',
+    columns: ['id', 'level', 'parent', 'data', 'prefix', 'pos'],
+    where: 'prefix = ?',
+    whereArgs: [prefix],
+    orderBy: 'pos',
+    limit: 1,
+  );
+
+  return rows.isNotEmpty
+      ? contentRow(rows[0])
+      : homeContent;
 }
 
 Future<List<Article>> loadArticles({int parentId = 0}) async {
@@ -158,7 +188,14 @@ Future<List<Content>> findContent({String needle = ''}) async {
 
   List<Map> rowsExactly = await db.query(
     'search',
-    columns: ['content_id', 'content_level', 'content_parent', 'content_data', 'content_prefix', 'content_pos'],
+    columns: [
+      'content_id',
+      'content_level',
+      'content_parent',
+      'content_data',
+      'content_prefix',
+      'content_pos'
+    ],
     where: where,
     whereArgs: whereArgs,
     groupBy: 'content_id',
@@ -175,7 +212,14 @@ Future<List<Content>> findContent({String needle = ''}) async {
 
   List<Map> rowsStarFrom = await db.query(
     'search',
-    columns: ['content_id', 'content_level', 'content_parent', 'content_data', 'content_prefix', 'content_pos'],
+    columns: [
+      'content_id',
+      'content_level',
+      'content_parent',
+      'content_data',
+      'content_prefix',
+      'content_pos'
+    ],
     where: where,
     whereArgs: whereArgs,
     groupBy: 'content_id',
@@ -184,16 +228,7 @@ Future<List<Content>> findContent({String needle = ''}) async {
   List<Map> rows = rowsExactly + rowsStarFrom;
 
   return rows.isNotEmpty
-      ? rows
-          .map((row) => Content(
-                id: row['content_id'] as int,
-                level: 0,
-                data: row['content_data'] as String,
-                prefix: row['content_prefix'] as String,
-                parent: row['content_parent'] as int,
-                pos: row['content_pos'] as int,
-              ))
-          .toList()
+      ? rows.map((row) => searchRow(row)).toList()
       : List.empty();
 }
 
