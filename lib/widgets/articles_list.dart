@@ -8,23 +8,27 @@ import 'package:mova/styles/markdown.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ArticlesList extends StatelessWidget {
-  const ArticlesList({super.key, required this.articles, required this.content});
+  const ArticlesList(
+      {super.key, required this.articles, required this.content});
+
   final List<Article> articles;
   final Content content;
 
   @override
   Widget build(BuildContext context) {
-
     Future<void> openContent(
-        BuildContext context,
-        String prefix,
-        ) async {
+      BuildContext context,
+      String prefix,
+    ) async {
       Content nextContent = await loadContentByPrefix(prefix: '$prefix.');
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (ctx) => Pravopys(content: nextContent, prevContent: content),
-        ),
-      ); // Navigator.push(context, route)
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) =>
+                Pravopys(content: nextContent, prevContent: content),
+          ),
+        ); // Navigator.push(context, route)
+      }
     }
 
     return Padding(
@@ -35,7 +39,7 @@ class ArticlesList extends StatelessWidget {
         itemBuilder: (context, index) {
           return MarkdownBody(
             data: articles[index].body,
-            onTapLink: (text, url, title){
+            onTapLink: (text, url, title) {
               openContent(context, text);
             },
             styleSheet: stylesheet,

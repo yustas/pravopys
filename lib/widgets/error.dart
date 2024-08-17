@@ -7,7 +7,6 @@ class Error extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -17,7 +16,9 @@ class Error extends StatelessWidget {
             color: Colors.red,
             size: 30,
           ),
-          const SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
           Text(message)
         ],
       ),

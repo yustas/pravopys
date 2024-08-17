@@ -39,12 +39,12 @@ class _PravopysState extends State<Pravopys> {
     var actions = [
       IconButton(
         icon: const Icon(Icons.search),
-        tooltip: SEARCH_TITLE,
+        tooltip: searchTitle,
         onPressed: () => search(context, ''),
       ),
       IconButton(
         icon: const Icon(Icons.home_rounded),
-        tooltip: APP_TITLE,
+        tooltip: appTitle,
         onPressed: () {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -68,6 +68,9 @@ class _PravopysState extends State<Pravopys> {
     return Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle),
+        titleTextStyle: Theme.of(context).textTheme.titleMedium,
+        centerTitle: false,
+        titleSpacing: 0,
         actions: actions,
       ),
       body: Column(
@@ -85,7 +88,8 @@ class _PravopysState extends State<Pravopys> {
                   return ContentList(
                       content: content, prevPage: widget.content);
                 } else {
-                  return ArticlesList(articles: articles, content: widget.content);
+                  return ArticlesList(
+                      articles: articles, content: widget.content);
                 }
               } else if (snapshot.hasError) {
                 return Error(message: 'Error: ${snapshot.error}');

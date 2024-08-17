@@ -1,3 +1,4 @@
-const String APP_TITLE = "Правопис";
-const String SEARCH_TITLE = "Пошук";
-const String SEARCH_HINT = "літера або слово";
+const String appTitle = "Правопис";
+const String searchTitle = "Пошук";
+const String searchHint = "літера або слово";
+const String searchNotFond = "поки нічого не зайдено";

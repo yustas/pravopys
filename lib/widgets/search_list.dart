@@ -17,7 +17,8 @@ class SearchList extends StatelessWidget {
     ) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => Pravopys(content: nextContent, prevContent: searchContent),
+          builder: (ctx) =>
+              Pravopys(content: nextContent, prevContent: searchContent),
         ),
       ); // Navigator.push(context, route)
     }

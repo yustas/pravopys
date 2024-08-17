@@ -62,8 +62,6 @@ Future<Database> initDb() async {
 
     db.setVersion(actualVersion);
   }
-  
-  //db.rawQuery("SELECT icu_load_collation('uk-UA', 'Ukrainian')");
 
   return db;
 }

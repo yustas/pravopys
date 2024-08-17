@@ -21,5 +21,4 @@ class Article {
     }
     return body;
   }
-
 }

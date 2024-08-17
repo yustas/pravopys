@@ -8,7 +8,7 @@ import 'package:mova/widgets/search_list.dart';
 import '../models/content.dart';
 
 class ContentSearchDelegate extends SearchDelegate {
-  ContentSearchDelegate() : super(searchFieldLabel: SEARCH_HINT);
+  ContentSearchDelegate() : super(searchFieldLabel: searchHint);
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -30,14 +30,11 @@ class ContentSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Center(
-      child: Text('поки нічого не знайдено ', style: TextStyle(fontSize: 24)),
-    );
+    return emptySearchResults(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-
     final Future<List<Content>> searchData = findContent(needle: query);
 
     return FutureBuilder<List<Content>>(
@@ -47,9 +44,7 @@ class ContentSearchDelegate extends SearchDelegate {
           if (snapshot.data!.isNotEmpty) {
             return SearchList(results: snapshot.data!);
           } else {
-            return const Center(
-              child: Text('поки нічого не зайдено', style: TextStyle(fontSize: 24)),
-            );
+            return emptySearchResults(context);
           }
         } else if (snapshot.hasError) {
           return Error(message: 'Error: ${snapshot.error}');
@@ -63,8 +58,17 @@ class ContentSearchDelegate extends SearchDelegate {
 
 void search(BuildContext context, String needle) {
   showSearch(
-      context: context,
-      delegate: ContentSearchDelegate(),
-      query: needle
+      context: context, delegate: ContentSearchDelegate(), query: needle);
+}
+
+Widget emptySearchResults(BuildContext context) {
+  return Center(
+    child: Text(
+      searchNotFond,
+      style: TextStyle(
+        fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+        color: Colors.grey,
+      ),
+    ),
   );
 }

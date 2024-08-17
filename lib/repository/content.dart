@@ -131,9 +131,7 @@ Future<Content> loadContentByPrefix({String prefix = ''}) async {
     limit: 1,
   );
 
-  return rows.isNotEmpty
-      ? contentRow(rows[0])
-      : homeContent;
+  return rows.isNotEmpty ? contentRow(rows[0]) : homeContent;
 }
 
 Future<List<Article>> loadArticles({int parentId = 0}) async {
@@ -235,7 +233,7 @@ Future<List<Content>> findContent({String needle = ''}) async {
 const homeContent = Content(
   id: 0,
   level: 0,
-  data: APP_TITLE,
+  data: appTitle,
   parent: 0,
   pos: 0,
   prefix: '',
@@ -244,7 +242,7 @@ const homeContent = Content(
 const searchContent = Content(
   id: 0,
   level: 0,
-  data: SEARCH_TITLE,
+  data: searchTitle,
   parent: 0,
   pos: 0,
   prefix: '',

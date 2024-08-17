@@ -9,7 +9,6 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var children = <Widget>[
       const SizedBox(height: 10),
       SizedBox(
