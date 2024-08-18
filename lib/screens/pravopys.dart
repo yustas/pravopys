@@ -9,6 +9,7 @@ import 'package:mova/widgets/header.dart';
 import 'package:mova/widgets/content_list.dart';
 import 'package:mova/widgets/articles_list.dart';
 import 'package:mova/utils/search.dart';
+import 'package:mova/utils/controllers.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class Pravopys extends StatefulWidget {
@@ -22,6 +23,12 @@ class Pravopys extends StatefulWidget {
 }
 
 class _PravopysState extends State<Pravopys> {
+  final ScrollPositionController _scrollController = ScrollPositionController();
+
+  void onScroll(ScrollPosition scrollPosition) {
+    _scrollController.doScroll!(scrollPosition);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Future<PageData> pageData =
@@ -75,7 +82,7 @@ class _PravopysState extends State<Pravopys> {
       ),
       body: Column(
         children: [
-          Header(title: header, searchBar: isFirstScreen),
+          Header(title: header, searchBar: isFirstScreen, scrollController: _scrollController,),
           Expanded(
               child: FutureBuilder<PageData>(
             future: pageData,
@@ -89,7 +96,9 @@ class _PravopysState extends State<Pravopys> {
                       content: content, prevPage: widget.content);
                 } else {
                   return ArticlesList(
-                      articles: articles, content: widget.content);
+                      articles: articles,
+                      content: widget.content,
+                      onScroll: onScroll);
                 }
               } else if (snapshot.hasError) {
                 return Error(message: 'Error: ${snapshot.error}');
