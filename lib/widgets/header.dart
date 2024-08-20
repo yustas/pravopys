@@ -44,13 +44,11 @@ class _HeaderState extends State<Header> {
       SizedBox(
         width: double.infinity,
         child: AnimatedContainer(
-          duration: const Duration(seconds: 0),
-          height: height,
+          duration: const Duration(milliseconds: 500),
           child: Text(
             widget.title,
             style: Theme.of(context).textTheme.headlineLarge,
             textAlign: TextAlign.left,
-            overflow: overflow,
           ),
         ),
       ),
