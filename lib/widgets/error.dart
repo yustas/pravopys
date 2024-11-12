@@ -19,7 +19,9 @@ class Error extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          Text(message)
+          Flexible(
+            child: Text(message),
+          )
         ],
       ),
     );
