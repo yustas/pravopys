@@ -6,4 +6,6 @@ var stylesheet = MarkdownStyleSheet(
       .textTheme
       .titleLarge!
       .copyWith(fontSize: 24, color: Colors.blue),
+  listIndent: 15.0,
+
 );

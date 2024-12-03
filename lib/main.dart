@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mova/themes/material.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/screens/pravopys.dart';
 import 'package:logging/logging.dart';
@@ -25,32 +26,9 @@ class MovaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = ThemeData().textTheme.copyWith(
-        // AppTitle
-        titleLarge: ThemeData().textTheme.titleLarge!.copyWith(fontSize: 20),
-        // # Heading 1
-        headlineLarge: ThemeData()
-            .textTheme
-            .headlineLarge!
-            .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
-        headlineSmall:
-            ThemeData().textTheme.headlineSmall!.copyWith(fontSize: 24),
-        bodyMedium: ThemeData().textTheme.bodyMedium!.copyWith(
-              fontSize: 15,
-            ),
-        bodySmall: ThemeData().textTheme.bodySmall!.copyWith(fontSize: 16));
-
     return MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.light,
-        textTheme: textTheme,
-        /* light theme settings */
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        textTheme: textTheme,
-        /* dark theme settings */
-      ),
+      theme: themeLight(context),
+      darkTheme: MaterialTheme.dark(context),
       themeMode: ThemeMode.system,
       home: const Pravopys(content: homeContent, prevContent: null),
     );

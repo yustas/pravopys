@@ -4,7 +4,7 @@ import 'package:mova/repository/content.dart';
 import 'package:mova/screens/pravopys.dart';
 
 import '../models/article.dart';
-import 'package:mova/styles/markdown.dart';
+import 'package:mova/themes//markdown.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ArticlesList extends StatefulWidget {

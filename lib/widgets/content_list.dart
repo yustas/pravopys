@@ -24,18 +24,15 @@ class ContentList extends StatelessWidget {
     }
 
     return Container(
-      decoration: const BoxDecoration(
-          color: Color.fromARGB(30, 150, 150, 150),
-          border: Border(
-              top: BorderSide(color: Color.fromARGB(70, 150, 150, 150)))),
+      color: Colors.grey,
+      // decoration: const BoxDecoration(
+      //     border: Border(
+      //         top: BorderSide(color: Color.fromARGB(70, 150, 150, 150)))),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-          ),
+          color: Colors.white,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: content.length,
