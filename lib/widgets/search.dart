@@ -1,40 +1,54 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mova/utils/search.dart';
 
 import '../i18n/ua.dart';
 
-class Search extends StatelessWidget {
+class Search extends StatefulWidget {
   const Search({super.key});
 
   @override
+  State<Search> createState() => _SearchTextFieldExampleState();
+}
+
+class _SearchTextFieldExampleState extends State<Search> {
+  late TextEditingController textController;
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController(text: '');
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
+  void routeToSearch(BuildContext context) {
+    FocusScope.of(context).unfocus();
+    textController.clear();
+
+  }
+
+  void searchAction(BuildContext context) {
+    search(context, textController.text);
+    textController.value = TextEditingValue.empty;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SearchAnchor(
-      builder: (BuildContext context, SearchController controller) {
-        return SearchBar(
-          //onTap: controller.openView,
-          onTap: () => search(context, ''),
-          onChanged: (text) {
-            search(context, text);
-            controller.text = "";
-          },
-          controller: controller,
-          padding: const WidgetStatePropertyAll<EdgeInsets>(
-              EdgeInsets.symmetric(horizontal: 16.0, vertical: 0)),
-          elevation: const WidgetStatePropertyAll(0.0),
-          backgroundColor:
-              const WidgetStatePropertyAll(Color.fromARGB(255, 240, 240, 240)),
-          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          )),
-          leading: const Icon(Icons.search),
-          hintText: searchHint,
-          textStyle: WidgetStatePropertyAll<TextStyle>(TextStyle(
-              fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize)),
-        );
-      },
-      suggestionsBuilder: (BuildContext context, SearchController controller) =>
-          {},
+    FocusScope.of(context).unfocus();
+
+    return CupertinoSearchTextField(
+      autocorrect: false,
+      autofocus: false,
+      controller: textController,
+      placeholder: searchHint,
+      onChanged: (value) => searchAction(context),
+      onTap: () => searchAction(context),
+      onSuffixTap: () => textController.clear(),
     );
   }
 }

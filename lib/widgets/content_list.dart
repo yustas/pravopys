@@ -24,52 +24,61 @@ class ContentList extends StatelessWidget {
     }
 
     return Container(
-      color: Colors.grey,
-      // decoration: const BoxDecoration(
-      //     border: Border(
-      //         top: BorderSide(color: Color.fromARGB(70, 150, 150, 150)))),
+      padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 0),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          color: Colors.white,
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: content.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {
-                    openContent(
-                      context,
-                      content[index],
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6.0),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color.fromARGB(70, 150, 150, 150)))),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          children: [Text(content[index].numeration)],
+        decoration: BoxDecoration(
+          //color: Theme.of(context).colorScheme.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: content.length,
+          itemBuilder: (context, index) {
+            Widget numeration = content[index].numeration.toString().isNotEmpty
+                ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
+                : Text('•', style: Theme.of(context).textTheme.titleLarge);
+
+            return InkWell(
+                onTap: () {
+                  openContent(
+                    context,
+                    content[index],
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              //color: Color.fromARGB(70, 150, 150, 150)
+                              color: Theme.of(context).colorScheme.outlineVariant,
+                          ))),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        children: [
+                          numeration,
+                          const SizedBox(width: 25)
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(content[index].data,
+                                style: Theme.of(context).textTheme.titleLarge)
+                          ],
                         ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [Text(content[index].data)],
-                          ),
-                        ),
-                        const Column(
-                          children: [Icon(Icons.chevron_right)],
-                        ),
-                      ],
-                    ),
-                  ));
-            },
-          ),
+                      ),
+                      const Column(
+                        children: [Icon(Icons.chevron_right)],
+                      ),
+                    ],
+                  ),
+                ));
+          },
         ),
       ),
     );

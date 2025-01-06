@@ -53,16 +53,21 @@ class _ArticlesListState extends State<ArticlesList> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView.builder(
-        controller: _scrollController,
+        //controller: _scrollController,
         scrollDirection: Axis.vertical,
         itemCount: widget.articles.length,
         itemBuilder: (context, index) {
-          return MarkdownBody(
-            data: widget.articles[index].body,
-            onTapLink: (text, url, title) {
-              openContent(context, text);
-            },
-            styleSheet: stylesheet,
+          return Column(
+            children: [
+              MarkdownBody(
+                data: widget.articles[index].body,
+                onTapLink: (text, url, title) {
+                  openContent(context, text);
+                },
+                styleSheet: stylesheet(context),
+              ),
+              const SizedBox(height: 10)
+            ],
           );
         },
       ),

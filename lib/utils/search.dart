@@ -16,6 +16,9 @@ class ContentSearchDelegate extends SearchDelegate {
       IconButton(
         icon: const Icon(Icons.clear),
         onPressed: () => query.isEmpty ? close(context, null) : query = '',
+        style: IconButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSurface
+        ),
       ),
     ];
   }
@@ -25,6 +28,9 @@ class ContentSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () => close(context, null),
+      style: IconButton.styleFrom(
+          foregroundColor: Theme.of(context).colorScheme.onSurface
+      ),
     );
   }
 
@@ -67,7 +73,7 @@ Widget emptySearchResults(BuildContext context) {
       searchNotFond,
       style: TextStyle(
         fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-        color: Colors.grey,
+        color: Colors.red,
       ),
     ),
   );

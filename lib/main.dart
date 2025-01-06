@@ -28,7 +28,7 @@ class MovaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: themeLight(context),
-      darkTheme: MaterialTheme.dark(context),
+      darkTheme: themeDark(context),//MaterialTheme.dark(context),
       themeMode: ThemeMode.system,
       home: const Pravopys(content: homeContent, prevContent: null),
     );

@@ -73,10 +73,8 @@ class _PravopysState extends State<Pravopys> {
     }
 
     return Scaffold(
-//      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(appBarTitle),
-        titleTextStyle: Theme.of(context).textTheme.titleMedium,
         centerTitle: false,
         titleSpacing: 0,
         actions: actions,
