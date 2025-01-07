@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mova/utils/controllers.dart';
 import 'package:mova/widgets/search.dart';
 
 class Header extends StatelessWidget {
   const Header(
       {super.key,
       required this.title,
-      required this.searchBar,
-      required this.scrollController});
+      required this.searchBar});
 
   final String title;
   final bool searchBar;
-  final ScrollPositionController scrollController;
 
   final double? fontSize = 24;
 

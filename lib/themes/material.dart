@@ -69,14 +69,21 @@ class MaterialTheme {
               fontWeight: FontWeight.w800,
               color: colorScheme.onSurface
         ),
+        // # Heading 2
+        headlineMedium: ThemeData()
+            .textTheme
+            .headlineMedium!
+            .copyWith(
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              color: colorScheme.onSurface
+        ),
         headlineSmall:
             ThemeData().textTheme.headlineSmall!.copyWith(fontSize: 24),
-        // Tinos height: 1.3,
 
         bodyMedium: GoogleFonts.roboto(textStyle: ThemeData().textTheme.bodyMedium!.copyWith(
             fontSize: 18,
             color: colorScheme.onSurfaceVariant,
-//          height: 1.3,
         )),
         bodySmall: ThemeData().textTheme.bodySmall!.copyWith(fontSize: 15),
     );

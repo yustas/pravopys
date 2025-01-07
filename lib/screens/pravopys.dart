@@ -9,30 +9,18 @@ import 'package:mova/widgets/header.dart';
 import 'package:mova/widgets/content_list.dart';
 import 'package:mova/widgets/articles_list.dart';
 import 'package:mova/utils/search.dart';
-import 'package:mova/utils/controllers.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-class Pravopys extends StatefulWidget {
+class Pravopys extends StatelessWidget {
   const Pravopys({super.key, required this.content, required this.prevContent});
 
   final Content content;
   final Content? prevContent;
 
   @override
-  State<Pravopys> createState() => _PravopysState();
-}
-
-class _PravopysState extends State<Pravopys> {
-  final ScrollPositionController _scrollController = ScrollPositionController();
-
-  void onScroll(ScrollPosition scrollPosition) {
-    _scrollController.doScroll!(scrollPosition);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Future<PageData> pageData =
-        loadPage(parentContentId: widget.content.id);
+        loadPage(parentContentId: content.id);
 
     String getContentData(Content content) {
       return content.prefix.isNotEmpty
@@ -40,9 +28,9 @@ class _PravopysState extends State<Pravopys> {
           : content.data;
     }
 
-    var isFirstScreen = widget.prevContent == null;
-    var header = getContentData(widget.content);
-    var appBarTitle = isFirstScreen ? '' : getContentData(widget.prevContent!);
+    var isFirstScreen = prevContent == null;
+    var header = getContentData(content);
+    var appBarTitle = isFirstScreen ? '' : getContentData(prevContent!);
     var actions = [
       IconButton(
         icon: const Icon(Icons.search),
@@ -81,23 +69,30 @@ class _PravopysState extends State<Pravopys> {
       ),
       body: Column(
         children: [
-          Header(title: header, searchBar: isFirstScreen, scrollController: _scrollController,),
           Expanded(
               child: FutureBuilder<PageData>(
             future: pageData,
             builder: (BuildContext context, AsyncSnapshot<PageData> snapshot) {
               if (snapshot.hasData) {
-                var content = snapshot.data!.content;
+                var links = snapshot.data!.content;
                 var articles = snapshot.data!.articles;
 
-                if (content.isNotEmpty) {
-                  return ContentList(
-                      content: content, prevPage: widget.content);
+                if (links.isNotEmpty) {
+                  return Column(
+                    children: [
+                      Header(title: header, searchBar: isFirstScreen),
+                      Expanded(
+                        child: ContentList(
+                            content: links, prevPage: content),
+                      ),
+                    ],
+                  );
                 } else {
                   return ArticlesList(
+                      header: header,
                       articles: articles,
-                      content: widget.content,
-                      onScroll: onScroll);
+                      content: content,
+                  );
                 }
               } else if (snapshot.hasError) {
                 return Error(message: 'Error: ${snapshot.error}');

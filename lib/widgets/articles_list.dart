@@ -7,31 +7,13 @@ import '../models/article.dart';
 import 'package:mova/themes//markdown.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-class ArticlesList extends StatefulWidget {
+class ArticlesList extends StatelessWidget {
   const ArticlesList(
-      {super.key, required this.articles, required this.content, required this.onScroll});
+      {super.key, required this.articles, required this.content, required  this.header});
 
+  final String header;
   final List<Article> articles;
   final Content content;
-  final void Function(ScrollPosition) onScroll;
-
-  @override
-  State<ArticlesList> createState() => _ArticlesListState();
-}
-
-class _ArticlesListState extends State<ArticlesList> {
-
-  final ScrollController _scrollController = ScrollController();
-
-  _scrollListener() {
-    widget.onScroll(_scrollController.position);
-  }
-
-  @override
-  void initState() {
-    _scrollController.addListener(_scrollListener);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +26,7 @@ class _ArticlesListState extends State<ArticlesList> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) =>
-                Pravopys(content: nextContent, prevContent: widget.content),
+                Pravopys(content: nextContent, prevContent: content),
           ),
         ); // Navigator.push(context, route)
       }
@@ -52,24 +34,36 @@ class _ArticlesListState extends State<ArticlesList> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListView.builder(
-        //controller: _scrollController,
-        scrollDirection: Axis.vertical,
-        itemCount: widget.articles.length,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              MarkdownBody(
-                data: widget.articles[index].body,
-                onTapLink: (text, url, title) {
-                  openContent(context, text);
-                },
-                styleSheet: stylesheet(context),
-              ),
-              const SizedBox(height: 10)
-            ],
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10,),
+          Text(
+            header,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 10,),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    MarkdownBody(
+                      data: articles[index].body,
+                      onTapLink: (text, url, title) {
+                        openContent(context, text);
+                      },
+                      styleSheet: stylesheet(context),
+                    ),
+                    const SizedBox(height: 10)
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
