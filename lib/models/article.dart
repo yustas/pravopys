@@ -13,12 +13,19 @@ class Article {
   /// Returns parsed article body
   get body {
     String body = data;
-    RegExp exp = RegExp(r'(§( ?)+\d+)');
-    Iterable<RegExpMatch> links = exp.allMatches(data);
+    RegExp contentLink = RegExp(r'(§( ?)+\d+)');
+    Iterable<RegExpMatch> links = contentLink.allMatches(data);
     for (final m in links) {
       String link = m[0]!.replaceAll(' ', '');
-      body = data.replaceAll(m[0] as Pattern, '[$link]($link)');
+      body = body.replaceAll(m[0] as Pattern, '[$link]($link)');
     }
+
+    RegExp note = RegExp(r'(\*\*Примітка( \d)?\*\*.)');
+    Iterable<RegExpMatch> notes = note.allMatches(data);
+    for (final m in notes) {
+      body = body.replaceAll(m[0] as Pattern, '');
+    }
+
     return body;
   }
 }

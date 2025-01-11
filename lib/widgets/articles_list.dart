@@ -49,6 +49,7 @@ class ArticlesList extends StatelessWidget {
               itemCount: articles.length,
               itemBuilder: (context, index) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     MarkdownBody(
                       data: articles[index].body,
