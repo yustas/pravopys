@@ -6,7 +6,29 @@ stylesheet(BuildContext context) {
       h1: ThemeData()
           .textTheme
           .titleLarge!
-          .copyWith(fontSize: 24, color: Colors.blue),
+          .copyWith(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        decoration: TextDecoration.underline,
+        decorationThickness: 0.5,
+        decorationStyle: TextDecorationStyle.solid
+      ),
+      h1Padding: EdgeInsets.only(top: 20, bottom: 10),
+      h2: ThemeData()
+          .textTheme
+          .headlineMedium!
+          .copyWith(
+          fontSize: 21,
+          fontWeight: FontWeight.w600
+      ),
+      h2Padding: EdgeInsets.only(top: 10, bottom: 10),
+      h3: ThemeData()
+          .textTheme
+          .headlineSmall!
+          .copyWith(
+          fontSize: 18,
+          fontWeight: FontWeight.w600
+      ),
       h6: ThemeData().textTheme.bodyLarge!.copyWith(),
       h6Padding: EdgeInsets.all(0),
       h6Align: WrapAlignment.start,
@@ -18,15 +40,13 @@ stylesheet(BuildContext context) {
       p: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
-      strong: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-      em: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w100,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+      strong: const TextStyle(
+        fontWeight: FontWeight.w600,
+      ),
+      em: TextStyle(
+        fontWeight: FontWeight.w100,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
       code: Theme.of(context)
           .textTheme
           .bodyLarge!
@@ -38,7 +58,8 @@ stylesheet(BuildContext context) {
               left: BorderSide(
                   color: Theme.of(context).colorScheme.surfaceContainer,
                   width: 3))),
-      //listIndent: 0,
+      listIndent: 26,
+      //listBulletPadding: EdgeInsets.only(right: 10),
       orderedListAlign: WrapAlignment.start,
       //p: ThemeData().textTheme.bodyMedium!.copyWith(),
       //  pPadding: const EdgeInsets.only(bottom: 15),
@@ -56,22 +77,27 @@ stylesheet(BuildContext context) {
         //     right: BorderSide(color: Theme.of(context).colorScheme.shadow)
         // )
       ),
-      tableBorder: TableBorder(
-        verticalInside: BorderSide(
-          color: Theme.of(context).colorScheme.surfaceContainerHigh,
+      tableBorder: TableBorder.all(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           width: 1,
+          borderRadius: BorderRadius.circular(10)
         ),
-      ),
+      // tableBorder: TableBorder(
+      //   verticalInside: BorderSide(
+      //     color: Theme.of(context).colorScheme.surfaceContainerHigh,
+      //     width: 1,
+      //   ),
+      // ),
       tableCellsPadding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
-      tableHead: TextStyle(
-        fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+      tableHead: Theme.of(context).textTheme.bodySmall!.copyWith(
+          fontWeight: FontWeight.w600
       ),
-      tableBody: TextStyle(
-        fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+      tableBody: Theme.of(context).textTheme.bodySmall!.copyWith(
+        fontStyle: FontStyle.normal
       ),
       tableColumnWidth: IntrinsicColumnWidth(),
       tableCellsDecoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       textAlign: WrapAlignment.start
   );

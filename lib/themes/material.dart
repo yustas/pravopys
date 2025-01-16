@@ -78,9 +78,12 @@ class MaterialTheme {
               fontWeight: FontWeight.w800,
               color: colorScheme.onSurface
         ),
+        // # Heading 3
         headlineSmall:
-            ThemeData().textTheme.headlineSmall!.copyWith(fontSize: 24),
-
+            ThemeData().textTheme.headlineSmall!.copyWith(
+                fontSize: 16,
+                color: colorScheme.onSurface
+            ),
         bodyLarge: GoogleFonts.roboto(textStyle: ThemeData().textTheme.bodyMedium!.copyWith(
           fontSize: 18,
           color: colorScheme.onSurfaceVariant,
@@ -89,8 +92,8 @@ class MaterialTheme {
             fontSize: 18,
             color: colorScheme.onSurfaceVariant,
         )),
-        bodySmall: GoogleFonts.lato(textStyle: ThemeData().textTheme.bodyMedium!.copyWith(
-          fontSize: 18,
+        bodySmall: GoogleFonts.roboto(textStyle: ThemeData().textTheme.bodyMedium!.copyWith(
+          fontSize: 15,
           color: colorScheme.onSurfaceVariant,
         )),
     );

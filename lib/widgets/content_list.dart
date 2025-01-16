@@ -35,9 +35,13 @@ class ContentList extends StatelessWidget {
           scrollDirection: Axis.vertical,
           itemCount: content.length,
           itemBuilder: (context, index) {
-            Widget numeration = content[index].numeration.toString().isNotEmpty
-                ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
-                : Text('•', style: Theme.of(context).textTheme.titleLarge);
+            // Widget numeration = content[index].numeration.toString().isNotEmpty
+            //     ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
+            //     : Text('•', style: Theme.of(context).textTheme.titleLarge);
+
+            String numerationText = content[index].numeration.toString().isNotEmpty
+                ? content[index].numeration + ' '
+                : '';
 
             return InkWell(
                 onTap: () {
@@ -57,17 +61,17 @@ class ContentList extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          numeration,
-                          const SizedBox(width: 25)
-                        ],
-                      ),
+                      // Column(
+                      //   children: [
+                      //     numeration,
+                      //     const SizedBox(width: 25)
+                      //   ],
+                      // ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(content[index].data,
+                            Text('$numerationText${content[index].data}',
                                 style: Theme.of(context).textTheme.titleLarge)
                           ],
                         ),

@@ -47,7 +47,7 @@ Future<Database> openDatabase() async {
 Future<void> deleteDatabase() async {
   var path = await getDatabasePath();
   log.info("Delete database: $path");
-  sql.deleteDatabase(path);
+  await sql.deleteDatabase(path);
 }
 
 Future<Database> initDb() async {
