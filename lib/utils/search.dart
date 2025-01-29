@@ -10,6 +10,10 @@ import '../models/content.dart';
 class ContentSearchDelegate extends SearchDelegate {
   ContentSearchDelegate() : super(searchFieldLabel: searchHint);
 
+  setQuery(String text) {
+    query = text;
+  }
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -36,7 +40,7 @@ class ContentSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return emptySearchResults(context);
+    return SearchHint(context, setQuery);
   }
 
   @override
@@ -49,8 +53,10 @@ class ContentSearchDelegate extends SearchDelegate {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
             return SearchList(results: snapshot.data!);
+          } else if (query.isNotEmpty) {
+            return EmptySearchResults(context);
           } else {
-            return emptySearchResults(context);
+            return SearchHint(context, setQuery);
           }
         } else if (snapshot.hasError) {
           return Error(message: 'Error: ${snapshot.error}');
@@ -67,14 +73,41 @@ void search(BuildContext context, String needle) {
       context: context, delegate: ContentSearchDelegate(), query: needle);
 }
 
-Widget emptySearchResults(BuildContext context) {
+Widget SearchHint(BuildContext context, callback) {
+  const examples = searchExamples;
+
   return Center(
+    child: Column(
+      children:[
+        const SizedBox(height: 20,),
+        const Text(searchTry),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...examples.map((text) => SearchExample(context, text, callback))
+          ],
+        )
+      ]
+      ),
+  );
+}
+
+Widget SearchExample(BuildContext context, text, onTap) {
+  return GestureDetector(
+    child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(text),
+        ),
+    ),
+    onTap: () => onTap(text),
+  );
+}
+
+Widget EmptySearchResults(BuildContext context) {
+  return const Center(
     child: Text(
       searchNotFond,
-      style: TextStyle(
-        fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-        color: Colors.red,
-      ),
     ),
   );
 }

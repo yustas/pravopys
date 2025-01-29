@@ -11,6 +11,7 @@ class Loading extends StatelessWidget {
         height: 60,
         child: CircularProgressIndicator(
           color: Theme.of(context).hintColor,
+          strokeWidth: 1,
         ),
       ),
     );
