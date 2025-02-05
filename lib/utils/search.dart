@@ -5,7 +5,7 @@ import 'package:mova/widgets/error.dart';
 import 'package:mova/widgets/loading.dart';
 import 'package:mova/widgets/search_list.dart';
 
-import '../models/content.dart';
+import '../models/search_data.dart';
 
 class ContentSearchDelegate extends SearchDelegate {
   ContentSearchDelegate() : super(searchFieldLabel: searchHint);
@@ -45,11 +45,11 @@ class ContentSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final Future<List<Content>> searchData = findContent(needle: query);
+    final Future<List<SearchData>> searchData = findContent(needle: query);
 
-    return FutureBuilder<List<Content>>(
+    return FutureBuilder<List<SearchData>>(
       future: searchData,
-      builder: (BuildContext context, AsyncSnapshot<List<Content>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<SearchData>> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
             return SearchList(results: snapshot.data!);
@@ -80,12 +80,20 @@ Widget SearchHint(BuildContext context, callback) {
     child: Column(
       children:[
         const SizedBox(height: 20,),
-        const Text(searchTry),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ...examples.map((text) => SearchExample(context, text, callback))
-          ],
+        Text(
+          searchTry,
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+            color: Theme.of(context).hintColor,
+          ),
+        ),
+        const SizedBox(height: 20,),
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 4,
+            children: List.from([
+              ...examples.map((text) => SearchExample(context, text, callback))
+            ],),
+          ),
         )
       ]
       ),
@@ -97,7 +105,7 @@ Widget SearchExample(BuildContext context, text, onTap) {
     child: Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(text),
+          child: Center(child: Text(text, textAlign: TextAlign.center,)),
         ),
     ),
     onTap: () => onTap(text),

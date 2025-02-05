@@ -5,6 +5,7 @@ import 'package:mova/models/article.dart';
 import 'package:mova/models/page_data.dart';
 
 import '../i18n/ua.dart';
+import '../models/search_data.dart';
 
 Iterable<int> uniqueList(Iterable<int> list) {
   return list.toSet().toList();
@@ -92,18 +93,19 @@ Content contentRow(Map row) {
   );
 }
 
-Content searchRow(Map row) {
-  return Content(
+SearchData searchRow(Map row, List<Content> content) {
+  return SearchData(
     id: row['content_id'] as int,
     level: row['content_level'] as int,
-    data: row['content_data'] as String,
-    prefix: row['content_prefix'] as String,
     parent: row['content_parent'] as int,
     pos: row['content_pos'] as int,
+    prefix: row['content_prefix'] as String,
+    data: row['content_data'] as String,
+    path: content.firstWhere((c) => c.id == row['content_parent']).name,
   );
 }
 
-Future<List<Content>> loadContent({int parent = 0}) async {
+Future<List<Content>> loadContentByParent({int parent = 0}) async {
   Database db = await initDb();
 
   List<Map> rows = await db.query(
@@ -111,7 +113,22 @@ Future<List<Content>> loadContent({int parent = 0}) async {
     columns: ['id', 'level', 'parent', 'data', 'prefix', 'pos'],
     where: 'parent = ?',
     whereArgs: [parent],
-    orderBy: 'pos',
+  );
+
+  return rows.isNotEmpty
+      ? rows.map((row) => contentRow(row)).toList()
+      : List.empty();
+}
+
+Future<List<Content>> loadContentById(Iterable<int> ids) async {
+  Database db = await initDb();
+  Iterable<String> placeholders = ids.map((id) => '?');
+
+  List<Map> rows = await db.query(
+    'content',
+    columns: ['id', 'level', 'parent', 'data', 'prefix', 'pos'],
+    where: 'id IN (${placeholders.join(',')})',
+    whereArgs: [...ids],
   );
 
   return rows.isNotEmpty
@@ -158,7 +175,7 @@ Future<List<Article>> loadArticles({int parentId = 0}) async {
 }
 
 Future<PageData> loadPage({int parentContentId = 0}) async {
-  List<Content> content = await loadContent(parent: parentContentId);
+  List<Content> content = await loadContentByParent(parent: parentContentId);
   List<int> contentIds = content.map((c) => c.id).toList();
 
   List<Article> articles = contentIds.isEmpty
@@ -168,7 +185,7 @@ Future<PageData> loadPage({int parentContentId = 0}) async {
   return PageData(content: content, articles: articles);
 }
 
-Future<List<Content>> findContent({String needle = ''}) async {
+Future<List<SearchData>> findContent({String needle = ''}) async {
   var db = await initDb();
   if (needle.isEmpty) {
     return List.empty();
@@ -197,6 +214,7 @@ Future<List<Content>> findContent({String needle = ''}) async {
     where: where,
     whereArgs: whereArgs,
     groupBy: 'content_id',
+
   );
 
   Iterable<int> ids = rowsExactly.map((row) => row['content_id'] as int);
@@ -224,10 +242,17 @@ Future<List<Content>> findContent({String needle = ''}) async {
   );
 
   List<Map> rows = rowsExactly + rowsStarFrom;
+  Iterable<int> contentIds = rows.isNotEmpty
+      ? rows.map((row) => row['content_parent'] as int)
+      : [];
+
+  List<Content> content = contentIds.isNotEmpty
+      ? await loadContentById(contentIds)
+      : List.empty();
 
   return rows.isNotEmpty
-      ? rows.map((row) => searchRow(row)).toList()
-      : List.empty();
+      ? rows.map((row) => searchRow(row, content)).toList()
+      : List<SearchData>.empty();
 }
 
 const homeContent = Content(
@@ -239,11 +264,12 @@ const homeContent = Content(
   prefix: '',
 );
 
-const searchContent = Content(
+const searchContent = SearchData(
   id: 0,
   level: 0,
   data: searchTitle,
   parent: 0,
   pos: 0,
   prefix: '',
+  path: ""
 );

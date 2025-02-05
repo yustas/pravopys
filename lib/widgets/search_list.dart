@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mova/repository/content.dart';
 
 import '../models/content.dart';
+import '../models/search_data.dart';
 import '../screens/pravopys.dart';
 
 class SearchList extends StatelessWidget {
   const SearchList({super.key, required this.results});
 
-  final List<Content> results;
+  final List<SearchData> results;
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +38,31 @@ class SearchList extends StatelessWidget {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                decoration: const BoxDecoration(
+                padding: const EdgeInsets.all(12.0),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(20),
                     border: Border(
                         bottom: BorderSide(
-                            color: Color.fromARGB(70, 150, 150, 150)))),
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ))),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      children: [Text(results[index].prefix)],
-                    ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text(results[index].data)],
+                        children: [
+                          Text(
+                              results[index].path,
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant
+                            ),
+
+                          ),
+                          const SizedBox(height: 10,),
+                          Text(results[index].name),
+                        ],
                       ),
                     ),
                     const Column(

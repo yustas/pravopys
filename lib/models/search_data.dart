@@ -1,11 +1,15 @@
-class SearchData {
+import 'content.dart';
+
+class SearchData extends Content {
   const SearchData({
-    required this.contentId,
-    required this.data,
-    required this.prefix,
+    required super.data,
+    required super.id,
+    required super.level,
+    required super.parent,
+    required super.pos,
+    required super.prefix,
+    required this.path,
   });
 
-  final int contentId;
-  final String data;
-  final String prefix;
+  final String path;
 }

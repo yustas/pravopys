@@ -27,7 +27,7 @@ class ContentList extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 0),
       child: Container(
         decoration: BoxDecoration(
-          //color: Theme.of(context).colorScheme.surfaceContainerLowest,
+//          color: Theme.of(context).colorScheme.surfaceContainerLowest,
           borderRadius: BorderRadius.circular(20),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -38,10 +38,6 @@ class ContentList extends StatelessWidget {
             // Widget numeration = content[index].numeration.toString().isNotEmpty
             //     ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
             //     : Text('•', style: Theme.of(context).textTheme.titleLarge);
-
-            String numerationText = content[index].numeration.toString().isNotEmpty
-                ? content[index].numeration + ' '
-                : '';
 
             return InkWell(
                 onTap: () {
@@ -55,7 +51,6 @@ class ContentList extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
-                              //color: Color.fromARGB(70, 150, 150, 150)
                               color: Theme.of(context).colorScheme.outlineVariant,
                           ))),
                   child: Row(
@@ -71,7 +66,7 @@ class ContentList extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('$numerationText${content[index].data}',
+                            Text('${content[index].name}',
                                 style: Theme.of(context).textTheme.titleLarge)
                           ],
                         ),
