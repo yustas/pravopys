@@ -82,7 +82,7 @@ Widget SearchHint(BuildContext context, callback) {
         const SizedBox(height: 20,),
         Text(
           searchTry,
-          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
             color: Theme.of(context).hintColor,
           ),
         ),

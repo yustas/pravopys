@@ -61,7 +61,10 @@ class SearchList extends StatelessWidget {
 
                           ),
                           const SizedBox(height: 10,),
-                          Text(results[index].name),
+                          Text(
+                              results[index].name,
+                              style: Theme.of(context).textTheme.titleLarge
+                          ),
                         ],
                       ),
                     ),
