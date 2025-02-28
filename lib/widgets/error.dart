@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mova/i18n/ua.dart';
 
 class Error extends StatelessWidget {
   const Error({super.key, required this.message});
@@ -7,23 +8,19 @@ class Error extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 30,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Flexible(
-            child: Text(message),
-          )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.error,
+          color: Theme.of(context).splashColor,
+          size: 50,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
+          child: Text(message,  textAlign: TextAlign.center,),
+        )
+      ],
     );
   }
 }

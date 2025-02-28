@@ -43,6 +43,7 @@ dependencies:
   flutter_native_splash: ^2.4.0
   google_fonts: ^6.2.1
   flutter_markdown: ^0.7.4+3
+  shared_preferences: ^2.5.1
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:mova/utils/search.dart';
 
 import '../i18n/ua.dart';
@@ -45,7 +44,7 @@ class _SearchTextFieldExampleState extends State<Search> {
       autocorrect: false,
       autofocus: false,
       controller: textController,
-      placeholder: searchHint,
+      placeholder: searchHintText,
       onChanged: (value) => searchAction(context),
       onTap: () => searchAction(context),
       onSuffixTap: () => textController.clear(),

@@ -1,3 +1,4 @@
+import 'package:mova/utils/history.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:mova/utils/db.dart';
 import 'package:mova/models/content.dart';
@@ -101,7 +102,7 @@ SearchData searchRow(Map row, List<Content> content) {
     pos: row['content_pos'] as int,
     prefix: row['content_prefix'] as String,
     data: row['content_data'] as String,
-    path: content.firstWhere((c) => c.id == row['content_parent']).name,
+    path: content.firstWhere((c) => c.id == row['content_parent'], orElse: () => homeContent).name,
   );
 }
 
@@ -249,6 +250,10 @@ Future<List<SearchData>> findContent({String needle = ''}) async {
   List<Content> content = contentIds.isNotEmpty
       ? await loadContentById(contentIds)
       : List.empty();
+
+  if (rows.isNotEmpty) {
+    await setHistory(needle);
+  }
 
   return rows.isNotEmpty
       ? rows.map((row) => searchRow(row, content)).toList()

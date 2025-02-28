@@ -4,11 +4,20 @@ import 'package:mova/repository/content.dart';
 import 'package:mova/widgets/error.dart';
 import 'package:mova/widgets/loading.dart';
 import 'package:mova/widgets/search_list.dart';
+import 'package:mova/utils/history.dart';
 
 import '../models/search_data.dart';
+import '../models/search_hint.dart';
+
+String title = searchTry;
+
+void search(BuildContext context, String needle) {
+  showSearch(
+      context: context, delegate: ContentSearchDelegate(), query: needle);
+}
 
 class ContentSearchDelegate extends SearchDelegate {
-  ContentSearchDelegate() : super(searchFieldLabel: searchHint);
+  ContentSearchDelegate() : super(searchFieldLabel: searchHintText);
 
   setQuery(String text) {
     query = text;
@@ -40,7 +49,7 @@ class ContentSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return SearchHint(context, setQuery);
+    return searchHint(context, setQuery);
   }
 
   @override
@@ -54,9 +63,9 @@ class ContentSearchDelegate extends SearchDelegate {
           if (snapshot.data!.isNotEmpty) {
             return SearchList(results: snapshot.data!);
           } else if (query.isNotEmpty) {
-            return EmptySearchResults(context);
+            return emptySearchResults(context);
           } else {
-            return SearchHint(context, setQuery);
+            return searchHint(context, setQuery);
           }
         } else if (snapshot.hasError) {
           return Error(message: 'Error: ${snapshot.error}');
@@ -68,39 +77,59 @@ class ContentSearchDelegate extends SearchDelegate {
   }
 }
 
-void search(BuildContext context, String needle) {
-  showSearch(
-      context: context, delegate: ContentSearchDelegate(), query: needle);
-}
+Widget searchHint(BuildContext context, Function callback) {
+  FutureBuilder<SearchHint> examplesGrid = FutureBuilder<SearchHint>(
+      future: showExamples(context, callback),
+      builder: (BuildContext context, AsyncSnapshot<SearchHint> snapshot) {
+        List<Widget> cards = [];
+        if (snapshot.hasData) {
+          cards = snapshot.data?.cards ?? [];
+          title = snapshot.data!.isHistory
+              ? searchHistory
+              : searchTry;
+        }
 
-Widget SearchHint(BuildContext context, callback) {
-  const examples = searchExamples;
+        return GridView.count(
+          crossAxisCount: 4,
+          children: cards,
+        );
+      }
+  );
 
   return Center(
     child: Column(
       children:[
         const SizedBox(height: 20,),
         Text(
-          searchTry,
+          title,
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
             color: Theme.of(context).hintColor,
           ),
         ),
         const SizedBox(height: 20,),
         Expanded(
-          child: GridView.count(
-            crossAxisCount: 4,
-            children: List.from([
-              ...examples.map((text) => SearchExample(context, text, callback))
-            ],),
-          ),
+          child: examplesGrid,
         )
       ]
       ),
   );
 }
 
-Widget SearchExample(BuildContext context, text, onTap) {
+Future<SearchHint> showExamples(context, onTap) async {
+  List<String> examples = (searchExamples.toList()..shuffle()).getRange(0, 4).toList();
+  List<String>? history = await getHistory();
+  //List<String> words = history ?? examples;
+  List<String> words = examples;
+
+  bool isHistory = words == history;
+  List<Widget> cards = List.from([
+    ...words.map((word) => searchExample(context, word, onTap))
+  ]);
+
+  return SearchHint(isHistory: isHistory, cards: cards);
+}
+
+Widget searchExample(BuildContext context, text, onTap) {
   return GestureDetector(
     child: Card(
         child: Padding(
@@ -112,7 +141,7 @@ Widget SearchExample(BuildContext context, text, onTap) {
   );
 }
 
-Widget EmptySearchResults(BuildContext context) {
+Widget emptySearchResults(BuildContext context) {
   return const Center(
     child: Text(
       searchNotFond,
