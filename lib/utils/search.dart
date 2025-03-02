@@ -89,34 +89,41 @@ Widget searchHint(BuildContext context, Function callback) {
               : searchTry;
         }
 
-        return GridView.count(
-          crossAxisCount: 4,
+        return Wrap(
+          spacing: 8.0, // Horizontal spacing between boxes
+          runSpacing: 8.0,
           children: cards,
         );
       }
   );
 
-  return Center(
-    child: Column(
-      children:[
-        const SizedBox(height: 20,),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-            color: Theme.of(context).hintColor,
+  return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+          const SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).hintColor,
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 20,),
-        Expanded(
-          child: examplesGrid,
-        )
-      ]
+          const SizedBox(height: 20,),
+          Expanded(
+            child: examplesGrid,
+          )
+        ]
       ),
-  );
+    );
 }
 
 Future<SearchHint> showExamples(context, onTap) async {
-  List<String> examples = (searchExamples.toList()..shuffle()).getRange(0, 4).toList();
+  List<String> examples = (searchExamples.toList()..shuffle()).getRange(0, 6).toList();
   List<String>? history = await getHistory();
   //List<String> words = history ?? examples;
   List<String> words = examples;
@@ -131,11 +138,13 @@ Future<SearchHint> showExamples(context, onTap) async {
 
 Widget searchExample(BuildContext context, text, onTap) {
   return GestureDetector(
-    child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(child: Text(text, textAlign: TextAlign.center,)),
-        ),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Text(text, textAlign: TextAlign.center,),
     ),
     onTap: () => onTap(text),
   );
