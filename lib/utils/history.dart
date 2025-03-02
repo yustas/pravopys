@@ -22,20 +22,23 @@ Future<List<String>?> setHistory(String word) async
   // To test error widget uncomment and search for something
   // history = List.empty();
 
-  bool exists = history.last == word || history.last.contains(word);
-
-  if (!exists) {
-
-    if (word.contains(history.last)) {
-      history.removeLast();
-    }
-
-    if (history.length >= maxHistory) {
-      history.removeAt(0);
-    }
-
+  if (history.isEmpty) {
     history.add(word);
     prefs.setStringList(key, history);
+  } else {
+    bool exists = history.last == word || history.last.contains(word);
+    if (!exists) {
+      if (word.contains(history.last)) {
+        history.removeLast();
+      }
+
+      if (history.length >= maxHistory) {
+        history.removeAt(0);
+      }
+
+      history.add(word);
+      prefs.setStringList(key, history);
+    }
   }
 
   return history.reversed.toList();
