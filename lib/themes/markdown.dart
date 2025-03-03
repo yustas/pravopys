@@ -3,33 +3,27 @@ import 'package:flutter/material.dart';
 
 stylesheet(BuildContext context) {
   return MarkdownStyleSheet(
-      h1: ThemeData()
-          .textTheme
-          .titleLarge!
-          .copyWith(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
-        decoration: TextDecoration.underline,
-        decorationThickness: 0.5,
-        decorationStyle: TextDecorationStyle.solid
-      ),
+      h1: ThemeData().textTheme.titleLarge!.copyWith(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          decoration: TextDecoration.underline,
+          decorationThickness: 0.5,
+          decorationStyle: TextDecorationStyle.solid,
+          color: Theme.of(context).colorScheme.onSurface),
       h1Padding: const EdgeInsets.only(top: 20, bottom: 10),
-      h2: ThemeData()
-          .textTheme
-          .headlineMedium!
-          .copyWith(
+      h2: ThemeData().textTheme.headlineMedium!.copyWith(
           fontSize: 21,
-          fontWeight: FontWeight.w600
-      ),
+          fontWeight: FontWeight.w600,
+          color: Theme.of(context).colorScheme.onSurface),
       h2Padding: const EdgeInsets.only(top: 10, bottom: 10),
-      h3: ThemeData()
-          .textTheme
-          .headlineSmall!
-          .copyWith(
+      h3: ThemeData().textTheme.headlineSmall!.copyWith(
           fontSize: 18,
-          fontWeight: FontWeight.w600
-      ),
-      h6: ThemeData().textTheme.bodyLarge!.copyWith(),
+          fontWeight: FontWeight.w600,
+          color: Theme.of(context).colorScheme.onSurface),
+      h6: ThemeData()
+          .textTheme
+          .bodyLarge!
+          .copyWith(color: Theme.of(context).colorScheme.onSurface),
       h6Padding: const EdgeInsets.all(0),
       h6Align: WrapAlignment.start,
       // horizontalRuleDecoration: ShapeDecoration(
@@ -80,8 +74,7 @@ stylesheet(BuildContext context) {
       tableBorder: TableBorder.all(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           width: 1,
-          borderRadius: BorderRadius.circular(10)
-        ),
+          borderRadius: BorderRadius.circular(10)),
       // tableBorder: TableBorder(
       //   verticalInside: BorderSide(
       //     color: Theme.of(context).colorScheme.surfaceContainerHigh,
@@ -89,16 +82,17 @@ stylesheet(BuildContext context) {
       //   ),
       // ),
       tableCellsPadding: const EdgeInsets.fromLTRB(10, 5, 5, 5),
-      tableHead: Theme.of(context).textTheme.bodySmall!.copyWith(
-          fontWeight: FontWeight.w600
-      ),
-      tableBody: Theme.of(context).textTheme.bodySmall!.copyWith(
-        fontStyle: FontStyle.normal
-      ),
+      tableHead: Theme.of(context)
+          .textTheme
+          .bodySmall!
+          .copyWith(fontWeight: FontWeight.w600),
+      tableBody: Theme.of(context)
+          .textTheme
+          .bodySmall!
+          .copyWith(fontStyle: FontStyle.normal),
       tableColumnWidth: const IntrinsicColumnWidth(),
       tableCellsDecoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
-      textAlign: WrapAlignment.start
-  );
+      textAlign: WrapAlignment.start);
 }
