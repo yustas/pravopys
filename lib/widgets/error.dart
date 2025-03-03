@@ -17,9 +17,9 @@ class Error extends StatelessWidget {
             color: Theme.of(context).splashColor,
             size: 50,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
-            child: Text(message,  textAlign: TextAlign.center,),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
+            child: Text(error,  textAlign: TextAlign.center,),
           )
         ],
       ),

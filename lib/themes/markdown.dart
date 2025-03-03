@@ -13,7 +13,7 @@ stylesheet(BuildContext context) {
         decorationThickness: 0.5,
         decorationStyle: TextDecorationStyle.solid
       ),
-      h1Padding: EdgeInsets.only(top: 20, bottom: 10),
+      h1Padding: const EdgeInsets.only(top: 20, bottom: 10),
       h2: ThemeData()
           .textTheme
           .headlineMedium!
@@ -21,7 +21,7 @@ stylesheet(BuildContext context) {
           fontSize: 21,
           fontWeight: FontWeight.w600
       ),
-      h2Padding: EdgeInsets.only(top: 10, bottom: 10),
+      h2Padding: const EdgeInsets.only(top: 10, bottom: 10),
       h3: ThemeData()
           .textTheme
           .headlineSmall!
@@ -30,7 +30,7 @@ stylesheet(BuildContext context) {
           fontWeight: FontWeight.w600
       ),
       h6: ThemeData().textTheme.bodyLarge!.copyWith(),
-      h6Padding: EdgeInsets.all(0),
+      h6Padding: const EdgeInsets.all(0),
       h6Align: WrapAlignment.start,
       // horizontalRuleDecoration: ShapeDecoration(
       //   shape: LinearBorder(
@@ -51,7 +51,7 @@ stylesheet(BuildContext context) {
           .textTheme
           .bodyLarge!
           .copyWith(overflow: TextOverflow.fade),
-      codeblockPadding: EdgeInsets.all(10),
+      codeblockPadding: const EdgeInsets.all(10),
       codeblockAlign: WrapAlignment.end,
       codeblockDecoration: BoxDecoration(
           border: Border(
@@ -95,7 +95,7 @@ stylesheet(BuildContext context) {
       tableBody: Theme.of(context).textTheme.bodySmall!.copyWith(
         fontStyle: FontStyle.normal
       ),
-      tableColumnWidth: IntrinsicColumnWidth(),
+      tableColumnWidth: const IntrinsicColumnWidth(),
       tableCellsDecoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
