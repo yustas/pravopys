@@ -39,7 +39,7 @@ class ContentList extends StatelessWidget {
             //     ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
             //     : Text('•', style: Theme.of(context).textTheme.titleLarge);
 
-            return InkWell(
+            return GestureDetector(
                 onTap: () {
                   openContent(
                     context,
