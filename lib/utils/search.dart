@@ -10,6 +10,7 @@ import '../models/search_data.dart';
 import '../models/search_hint.dart';
 
 String title = searchTry;
+List<String> examples = searchExamples.toList();
 
 void search(BuildContext context, String needle) {
   showSearch(
@@ -123,7 +124,7 @@ Widget searchHint(BuildContext context, Function callback) {
 }
 
 Future<SearchHint> showExamples(context, onTap) async {
-  List<String> examples = (searchExamples.toList()..shuffle()).getRange(0, 6).toList();
+  //List<String> examples = (searchExamples.toList()..shuffle()).getRange(0, 6).toList();
   List<String>? history = await getHistory();
   //List<String> words = history ?? examples;
   List<String> words = examples;
