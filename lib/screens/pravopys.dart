@@ -9,6 +9,7 @@ import 'package:mova/widgets/header.dart';
 import 'package:mova/widgets/content_list.dart';
 import 'package:mova/widgets/articles_list.dart';
 import 'package:mova/utils/search.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class Pravopys extends StatelessWidget {
   const Pravopys({super.key, required this.content, required this.prevContent});
@@ -54,6 +55,7 @@ class Pravopys extends StatelessWidget {
     ];
 
     if (isFirstScreen) {
+      FlutterNativeSplash.remove();
       appBarTitle = '';
       actions = [];
     }
