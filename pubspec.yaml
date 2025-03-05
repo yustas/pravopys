@@ -44,6 +44,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_markdown: ^0.7.4+3
   shared_preferences: ^2.5.1
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +101,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/icon.png"
