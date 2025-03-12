@@ -34,37 +34,41 @@ class ArticlesList extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10,),
-          Text(
-            header,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 10,),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: articles.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MarkdownBody(
-                      data: articles[index].body,
-                      onTapLink: (text, url, title) {
-                        openContent(context, text);
-                      },
-                      styleSheet: stylesheet(context),
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                );
-              },
+      child: SelectionArea(
+        selectionControls: materialTextSelectionControls,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10,),
+            Text(
+              header,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-          ),
-        ],
+            const SizedBox(height: 10,),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: articles.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MarkdownBody(
+                        data: articles[index].body,
+                        selectable: false,
+                        onTapLink: (text, url, title) {
+                          openContent(context, text);
+                        },
+                        styleSheet: stylesheet(context),
+                      ),
+                      const SizedBox(height: 10)
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

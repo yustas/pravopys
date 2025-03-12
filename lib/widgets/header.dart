@@ -10,8 +10,6 @@ class Header extends StatelessWidget {
   final String title;
   final bool searchBar;
 
-  final double? fontSize = 24;
-
   @override
   Widget build(BuildContext context) {
     var children = <Widget>[
@@ -22,7 +20,7 @@ class Header extends StatelessWidget {
           duration: const Duration(milliseconds: 500),
           child: Text(
             title,
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.left,
           ),
         ),
