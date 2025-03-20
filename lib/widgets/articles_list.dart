@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mova/models/content.dart';
 import 'package:mova/repository/content.dart';
@@ -34,8 +35,8 @@ class ArticlesList extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SelectionArea(
-        selectionControls: materialTextSelectionControls,
+      child: SelectableRegion(
+        selectionControls: CupertinoTextSelectionControls(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

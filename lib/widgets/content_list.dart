@@ -38,7 +38,6 @@ class ContentList extends StatelessWidget {
             // Widget numeration = content[index].numeration.toString().isNotEmpty
             //     ? Text(content[index].numeration, style: Theme.of(context).textTheme.titleLarge)
             //     : Text('•', style: Theme.of(context).textTheme.titleLarge);
-
             return GestureDetector(
                 onTap: () {
                   openContent(

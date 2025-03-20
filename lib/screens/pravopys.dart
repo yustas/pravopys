@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/models/page_data.dart';
@@ -11,16 +12,39 @@ import 'package:mova/widgets/articles_list.dart';
 import 'package:mova/utils/search.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-class Pravopys extends StatelessWidget {
+class Pravopys extends StatefulWidget {
   const Pravopys({super.key, required this.content, required this.prevContent});
 
   final Content content;
   final Content? prevContent;
 
   @override
+  State<Pravopys> createState() => _PravopysState();
+}
+
+class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    setState(() {}); // Trigger a rebuild
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final Future<PageData> pageData =
-        loadPage(parentContentId: content.id);
+        loadPage(parentContentId: widget.content.id);
 
     String getContentData(Content content) {
       return content.prefix.isNotEmpty
@@ -28,9 +52,9 @@ class Pravopys extends StatelessWidget {
           : content.data;
     }
 
-    var isFirstScreen = prevContent == null;
-    var header = getContentData(content);
-    var appBarTitle = isFirstScreen ? '' : getContentData(prevContent!);
+    var isFirstScreen = widget.prevContent == null;
+    var header = getContentData(widget.content);
+    var appBarTitle = isFirstScreen ? '' : getContentData(widget.prevContent!);
     var actions = [
       IconButton(
         icon: const Icon(Icons.search),
@@ -77,13 +101,16 @@ class Pravopys extends StatelessWidget {
                 var links = snapshot.data!.content;
                 var articles = snapshot.data!.articles;
 
+                final log = Logger('List view builder');
+                log.info('Pravopys context: ${Theme.of(context).colorScheme.brightness}');
+
                 if (links.isNotEmpty) {
                   return Column(
                     children: [
                       Header(title: header, searchBar: isFirstScreen),
                       Expanded(
                         child: ContentList(
-                            content: links, prevPage: content),
+                            content: links, prevPage: widget.content),
                       ),
                     ],
                   );
@@ -91,7 +118,7 @@ class Pravopys extends StatelessWidget {
                   return ArticlesList(
                       header: header,
                       articles: articles,
-                      content: content,
+                      content: widget.content,
                   );
                 }
               } else if (snapshot.hasError) {

@@ -187,11 +187,11 @@ Future<PageData> loadPage({int parentContentId = 0}) async {
 }
 
 Future<List<SearchData>> findContent({String needle = ''}) async {
-  var db = await initDb();
   if (needle.isEmpty) {
     return List.empty();
   }
 
+  var db = await initDb();
   String search = '';
   String? letter = '';
   for (var i = 0; i < needle.length; i++) {
