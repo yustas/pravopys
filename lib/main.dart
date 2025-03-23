@@ -27,6 +27,7 @@ class MovaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: themeLight(context),
       darkTheme: themeDark(context),//MaterialTheme.dark(context),
       themeMode: ThemeMode.system,
