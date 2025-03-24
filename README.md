@@ -18,3 +18,8 @@ The information in the application is taken from the ["Інститут мово
 - [Юрій Пасіхов](https://www.facebook.com/pasichov) teacher of programming, who inspired me to become an engineer
 - [Наталія Бабенкова](https://www.facebook.com/profile.php?id=100013106176714) teacher of Ukrainian language, whose lessons I remember to this day
  
+## Thanks
+- [Інститут мовознавства ім. О. О. Потебні](https://www.inmo.org.ua/pravopys-2019.html) for the information
+- [Ksenia Samokhina](https://www.linkedin.com/in/kseniia-samokhina) for assistance in development, testing and conversion from `pdf` to `md`
+- [Stanislav Holts](https://www.linkedin.com/in/golts), [Aleksandr Naumenko](https://www.linkedin.com/in/aleksandr-naumenko-3a7ab8151) for introducing me to [Flutter](https://flutter.dev/)
+- my kids and parents for their support whatever I do
