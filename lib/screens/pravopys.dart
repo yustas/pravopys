@@ -52,6 +52,19 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
           : content.data;
     }
 
+    Orientation orientation = MediaQuery.of(context).orientation;
+    // Define padding based on orientation
+    EdgeInsetsGeometry padding;
+    if (orientation == Orientation.portrait) {
+      // Portrait mode
+      padding =
+          const EdgeInsets.all(0); // Add more padding in portrait if necessary
+    } else {
+      // Landscape mode
+      padding = const EdgeInsets.symmetric(
+          horizontal: 32.0, vertical: 0); // Adjust padding in landscape mode
+    }
+
     var isFirstScreen = widget.prevContent == null;
     var header = getContentData(widget.content);
     var appBarTitle = isFirstScreen ? '' : getContentData(widget.prevContent!);
@@ -94,39 +107,44 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
       body: Column(
         children: [
           Expanded(
-              child: FutureBuilder<PageData>(
-            future: pageData,
-            builder: (BuildContext context, AsyncSnapshot<PageData> snapshot) {
-              if (snapshot.hasData) {
-                var links = snapshot.data!.content;
-                var articles = snapshot.data!.articles;
+              child: Padding(
+            padding: padding,
+            child: FutureBuilder<PageData>(
+              future: pageData,
+              builder:
+                  (BuildContext context, AsyncSnapshot<PageData> snapshot) {
+                if (snapshot.hasData) {
+                  var links = snapshot.data!.content;
+                  var articles = snapshot.data!.articles;
 
-                final log = Logger('List view builder');
-                log.info('Pravopys context: ${Theme.of(context).colorScheme.brightness}');
+                  final log = Logger('List view builder');
+                  log.info(
+                      'Pravopys context: ${Theme.of(context).colorScheme.brightness}');
 
-                if (links.isNotEmpty) {
-                  return Column(
-                    children: [
-                      Header(title: header, searchBar: isFirstScreen),
-                      Expanded(
-                        child: ContentList(
-                            content: links, prevPage: widget.content),
-                      ),
-                    ],
-                  );
-                } else {
-                  return ArticlesList(
+                  if (links.isNotEmpty) {
+                    return Column(
+                      children: [
+                        Header(title: header, searchBar: isFirstScreen),
+                        Expanded(
+                          child: ContentList(
+                              content: links, prevPage: widget.content),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return ArticlesList(
                       header: header,
                       articles: articles,
                       content: widget.content,
-                  );
+                    );
+                  }
+                } else if (snapshot.hasError) {
+                  return Error(message: 'Error: ${snapshot.error}');
+                } else {
+                  return const Loading();
                 }
-              } else if (snapshot.hasError) {
-                return Error(message: 'Error: ${snapshot.error}');
-              } else {
-                return const Loading();
-              }
-            },
+              },
+            ),
           ))
         ],
       ),
