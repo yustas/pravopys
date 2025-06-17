@@ -20,11 +20,12 @@ class Article {
       body = body.replaceAll(m[0] as Pattern, '[$link]($link)');
     }
 
-    RegExp note = RegExp(r'(\*\*Примітка( \d)?\*\*.)');
-    Iterable<RegExpMatch> notes = note.allMatches(data);
-    for (final m in notes) {
-      body = body.replaceAll(m[0] as Pattern, '');
-    }
+    // // Get rid of the "Note" title
+    // RegExp note = RegExp(r'(\*\*Примітка( \d)?\*\*.)');
+    // Iterable<RegExpMatch> notes = note.allMatches(data);
+    // for (final m in notes) {
+    //   body = body.replaceAll(m[0] as Pattern, '');
+    // }
 
     return body;
   }
