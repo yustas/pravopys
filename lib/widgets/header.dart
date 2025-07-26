@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mova/widgets/search.dart';
+import 'package:mova/widgets/search_row.dart';
 
 class Header extends StatelessWidget {
   const Header(
@@ -16,20 +16,17 @@ class Header extends StatelessWidget {
       const SizedBox(height: 10),
       SizedBox(
         width: double.infinity,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headlineMedium,
-            textAlign: TextAlign.left,
-          ),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.left,
         ),
       ),
       const SizedBox(height: 10),
     ];
 
     if (searchBar) {
-      children.add(const Search());
+      children.add(const SearchRow());
       children.add(const SizedBox(height: 10));
     }
 

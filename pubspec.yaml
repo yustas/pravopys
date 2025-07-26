@@ -45,6 +45,7 @@ dependencies:
   flutter_markdown: ^0.7.4+3
   shared_preferences: ^2.5.1
   flutter_launcher_icons: ^0.14.3
+  infinite_scroll_pagination: ^5.1.0
 
 dev_dependencies:
   flutter_test:

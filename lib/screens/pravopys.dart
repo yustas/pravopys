@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:mova/i18n/ua.dart';
 import 'package:mova/repository/content.dart';
 import 'package:mova/models/page_data.dart';
@@ -9,8 +8,9 @@ import 'package:mova/widgets/loading.dart';
 import 'package:mova/widgets/header.dart';
 import 'package:mova/widgets/content_list.dart';
 import 'package:mova/widgets/articles_list.dart';
-import 'package:mova/utils/search.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+import '../widgets/search.dart';
 
 class Pravopys extends StatefulWidget {
   const Pravopys({super.key, required this.content, required this.prevContent});
@@ -23,9 +23,12 @@ class Pravopys extends StatefulWidget {
 }
 
 class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
+  late Future<PageData> _pageData;
+
   @override
   void initState() {
     super.initState();
+    _pageData = loadPage(parentContentId: widget.content.id);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -43,9 +46,6 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final Future<PageData> pageData =
-        loadPage(parentContentId: widget.content.id);
-
     String getContentData(Content content) {
       return content.prefix.isNotEmpty
           ? "${content.prefix} ${content.data}"
@@ -68,33 +68,42 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
     var isFirstScreen = widget.prevContent == null;
     var header = getContentData(widget.content);
     var appBarTitle = isFirstScreen ? '' : getContentData(widget.prevContent!);
-    var actions = [
-      IconButton(
-        icon: const Icon(Icons.search),
-        tooltip: searchTitle,
-        onPressed: () => search(context, ''),
+    var actionSearch = IconButton(
+      icon: const Icon(Icons.search),
+      tooltip: searchTitle,
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => const Search(),
+        ),
       ),
-      IconButton(
-        icon: const Icon(Icons.home_rounded),
-        tooltip: appTitle,
-        onPressed: () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (ctx) => const Pravopys(
-                content: homeContent,
-                prevContent: null,
-              ),
+    );
+
+    var actionHome = IconButton(
+      icon: const Icon(Icons.home_rounded),
+      tooltip: appTitle,
+      onPressed: () {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (ctx) => const Pravopys(
+              content: homeContent,
+              prevContent: null,
             ),
-            (Route<dynamic> route) => false,
-          );
-        },
-      ),
+          ),
+              (Route<dynamic> route) => false,
+        );
+      },
+    );
+
+    var actions = [
+      actionSearch,
+      actionHome
     ];
 
     if (isFirstScreen) {
       FlutterNativeSplash.remove();
       appBarTitle = '';
-      actions = [];
+      actions = [
+      ];
     }
 
     return Scaffold(
@@ -103,6 +112,7 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
         centerTitle: false,
         titleSpacing: 0,
         actions: actions,
+        elevation: 0,
       ),
       body: Column(
         children: [
@@ -110,16 +120,12 @@ class _PravopysState extends State<Pravopys> with WidgetsBindingObserver {
               child: Padding(
             padding: padding,
             child: FutureBuilder<PageData>(
-              future: pageData,
+              future: _pageData,
               builder:
                   (BuildContext context, AsyncSnapshot<PageData> snapshot) {
                 if (snapshot.hasData) {
                   var links = snapshot.data!.content;
                   var articles = snapshot.data!.articles;
-
-                  final log = Logger('List view builder');
-                  log.info(
-                      'Pravopys context: ${Theme.of(context).colorScheme.brightness}');
 
                   if (links.isNotEmpty) {
                     return Column(

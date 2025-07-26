@@ -5,6 +5,8 @@ const String searchNotFond = "нічого не знайдено";
 const String searchTry = "Приклади:";
 const String searchHistory = "Історія пошуку";
 const String error = "Відбулась помилка, перезавантажте застосунок";
+const String rulesSwitch = "Правила";
+const String exampleSwitch = "Приклади";
 const searchExamples = [
   "архі",
   "ї",

@@ -29,6 +29,7 @@ ThemeData themeLight(BuildContext context) {
       appBarTheme: AppBarTheme(
           backgroundColor: lightColorScheme(context).surface,
           foregroundColor: lightColorScheme(context).onSurface,
+          scrolledUnderElevation: 0,
           actionsIconTheme: IconThemeData(
             color: lightColorScheme(context).onSurface,
           ),
@@ -45,6 +46,7 @@ ThemeData themeDark(BuildContext context) {
       appBarTheme: AppBarTheme(
           backgroundColor: darkColorScheme(context).surface,
           foregroundColor: darkColorScheme(context).onSurface,
+          scrolledUnderElevation: 0,
           actionsIconTheme: IconThemeData(
             color: darkColorScheme(context).onSurface,
           ),

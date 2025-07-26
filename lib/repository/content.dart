@@ -1,3 +1,4 @@
+import 'package:mova/models/example.dart';
 import 'package:mova/utils/history.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:mova/utils/db.dart';
@@ -83,6 +84,17 @@ Map<String, String> converter = {
   'Я': 'IA',
 };
 
+String translitConverter(String needle) {
+  String search = '';
+  String? letter = '';
+  for (var i = 0; i < needle.length; i++) {
+    letter = converter[needle[i]] ?? needle[i];
+    search = search + letter;
+  }
+
+  return search;
+}
+
 Content contentRow(Map row) {
   return Content(
     id: row['id'] as int,
@@ -94,15 +106,33 @@ Content contentRow(Map row) {
   );
 }
 
-SearchData searchRow(Map row, List<Content> content) {
+List<Content> contentRows(List<Map> rows) {
+  return rows.isNotEmpty
+      ? rows
+          .map((row) => Content(
+                id: row['content_id'] as int,
+                level: row['content_level'] as int,
+                data: row['content_data'] as String,
+                prefix: row['content_prefix'] as String,
+                parent: row['content_parent'] as int,
+                pos: row['content_pos'] as int,
+              ))
+          .toList()
+      : List.empty();
+}
+
+SearchData searchRow(Content searchContent, List<Content> parentContent) {
   return SearchData(
-    id: row['content_id'] as int,
-    level: row['content_level'] as int,
-    parent: row['content_parent'] as int,
-    pos: row['content_pos'] as int,
-    prefix: row['content_prefix'] as String,
-    data: row['content_data'] as String,
-    path: content.firstWhere((c) => c.id == row['content_parent'], orElse: () => homeContent).name,
+    id: searchContent.id,
+    level: searchContent.level,
+    parent: searchContent.parent,
+    pos: searchContent.pos,
+    prefix: searchContent.prefix,
+    data: searchContent.data,
+    path: parentContent
+        .firstWhere((c) => c.id == searchContent.parent,
+            orElse: () => homeContent)
+        .name,
   );
 }
 
@@ -186,19 +216,56 @@ Future<PageData> loadPage({int parentContentId = 0}) async {
   return PageData(content: content, articles: articles);
 }
 
+Future<List<Example>> loadExamples({int page = 1, String needle = ''}) async {
+  Database db = await initDb();
+  const limit = 25;
+  List<Map> rows = List.empty();
+
+  if (needle.isEmpty) {
+    rows = await db.query(
+      'examples',
+      columns: ['id', 'word', 'word_translit', 'content'],
+      limit: limit,
+      offset: (page - 1) * limit,
+    );
+  } else {
+    String search = translitConverter(needle);
+    String where = 'word_translit LIKE ?';
+    List whereArgs = ["%$search%"];
+
+    rows = await db.query(
+      'examples',
+      columns: ['id', 'word', 'word_translit', 'content'],
+      limit: limit,
+      offset: (page - 1) * limit,
+      where: where,
+      whereArgs: whereArgs,
+    );
+  }
+
+  return rows.isNotEmpty
+      ? rows
+          .map((row) => Example(
+                id: row['id'] as int,
+                word: row['word'] as String,
+                wordTranslit: row['word_translit'] as String,
+                content: (row['content'] as String)
+                    .split(',')
+                    .map((e) => int.parse(e))
+                    .toList(),
+              ))
+          .toList()
+      : List.empty();
+}
+
 Future<List<SearchData>> findContent({String needle = ''}) async {
   if (needle.isEmpty) {
     return List.empty();
   }
 
   var db = await initDb();
-  String search = '';
-  String? letter = '';
-  for (var i = 0; i < needle.length; i++) {
-    letter = converter[needle[i]] ?? needle[i];
-    search = search + letter;
-  }
 
+  String search = translitConverter(needle);
   String where = 'search_data LIKE ?';
   List whereArgs = [search];
 
@@ -215,7 +282,6 @@ Future<List<SearchData>> findContent({String needle = ''}) async {
     where: where,
     whereArgs: whereArgs,
     groupBy: 'content_id',
-
   );
 
   Iterable<int> ids = rowsExactly.map((row) => row['content_id'] as int);
@@ -243,20 +309,35 @@ Future<List<SearchData>> findContent({String needle = ''}) async {
   );
 
   List<Map> rows = rowsExactly + rowsStarFrom;
-  Iterable<int> contentIds = rows.isNotEmpty
-      ? rows.map((row) => row['content_parent'] as int)
-      : [];
+  List<Content> searchContent = contentRows(rows);
+  Iterable<int> contentIds =
+      rows.isNotEmpty ? rows.map((row) => row['content_parent'] as int) : [];
 
-  List<Content> content = contentIds.isNotEmpty
-      ? await loadContentById(contentIds)
-      : List.empty();
+  List<Content> parentContent =
+      contentIds.isNotEmpty ? await loadContentById(contentIds) : List.empty();
 
-  if (rows.isNotEmpty) {
+  if (searchContent.isNotEmpty) {
     await setHistory(needle);
   }
 
-  return rows.isNotEmpty
-      ? rows.map((row) => searchRow(row, content)).toList()
+  return searchContent.isNotEmpty
+      ? searchContent.map((row) => searchRow(row, parentContent)).toList()
+      : List<SearchData>.empty();
+}
+
+Future<List<SearchData>> findExampleContent(Example example) async {
+  if (example.content.isEmpty) {
+    return List.empty();
+  }
+
+  List<Content> content = await loadContentById(example.content);
+  Iterable<int> parentIds = content.isNotEmpty ? content.map((row) => row.parent) : [];
+
+  List<Content> parentContent =
+      parentIds.isNotEmpty ? await loadContentById(parentIds) : List.empty();
+
+  return content.isNotEmpty
+      ? content.map((row) => searchRow(row, parentContent)).toList()
       : List<SearchData>.empty();
 }
 
@@ -270,11 +351,10 @@ const homeContent = Content(
 );
 
 const searchContent = SearchData(
-  id: 0,
-  level: 0,
-  data: searchTitle,
-  parent: 0,
-  pos: 0,
-  prefix: '',
-  path: ""
-);
+    id: 0,
+    level: 0,
+    data: searchTitle,
+    parent: 0,
+    pos: 0,
+    prefix: '',
+    path: "");
