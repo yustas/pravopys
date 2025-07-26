@@ -4,9 +4,9 @@ Pravopys/Правопис is an iOS application designed to be a reference book 
 ![home.png](assets/screens/home.png) ![content.png](assets/screens/content.png) ![article.png](assets/screens/article.png) ![theme.png](assets/screens/theme.png) 
 
 ## Features
-- Works offline
-- Search by title
-- Themes for day and night
+- works offline
+- search by rules and examples
+- light/dark themes
 
 ## Privacy Policy
 See [Privacy Policy](./policy.md)
