@@ -14,6 +14,7 @@ class SegmentedControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoSlidingSegmentedControl<SearchSegment>(
+      proportionalWidth: true,
       groupValue: selectedSegment,
       onValueChanged: (SearchSegment? value) {
         if (value != null) {
@@ -22,11 +23,11 @@ class SegmentedControl extends StatelessWidget {
       },
       children: const {
         SearchSegment.rules: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(rulesSwitch),
         ),
         SearchSegment.examples: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text(exampleSwitch),
         ),
       },

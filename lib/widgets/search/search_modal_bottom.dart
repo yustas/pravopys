@@ -29,9 +29,11 @@ class SearchModalBottom extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                example.word,
-                style: Theme.of(context).textTheme.headlineMedium,
+              Expanded(
+                child: Text(
+                  example.word,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
               ),
               IconButton(
                 icon: const Icon(Icons.close),

@@ -32,7 +32,7 @@ Widget searchHintRules(BuildContext context, Function callback) {
         }
 
         return Wrap(
-          spacing: 8.0, // Horizontal spacing between boxes
+           spacing: 8.0, // Horizontal spacing between boxes
           runSpacing: 8.0,
           children: cards,
         );

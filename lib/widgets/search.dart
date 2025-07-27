@@ -40,35 +40,28 @@ class _SearchState extends State<Search> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text(appTitle),
-          centerTitle: false,
+          title: const Text(searchTitle),
+          centerTitle: true,
           titleSpacing: 0,
-          actions: const [
-            SizedBox(width: 36.0),
-          ],
         ),
         body: Column(children: [
           Expanded(
               child: Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 32.0, vertical: 0),
+                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            searchTitle,
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            textAlign: TextAlign.left,
-                          ),
-                          SegmentedControl(
-                            selectedSegment: selectedSegment,
-                            fieldValue: (SearchSegment value) {
-                              setState(() {
-                                selectedSegment = value;
-                              });
-                            },
+                          Expanded(
+                            child: SegmentedControl(
+                              selectedSegment: selectedSegment,
+                              fieldValue: (SearchSegment value) {
+                                setState(() {
+                                  selectedSegment = value;
+                                });
+                              },
+                            ),
                           ),
                         ],
                       ),
